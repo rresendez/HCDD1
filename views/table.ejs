@@ -1,0 +1,39 @@
+<html>
+<head>
+<style type="text/css">
+.blue_bg{ background-color:#1AB7EA; }
+
+table, th, td {
+    border: 1px solid black;
+}
+</style>
+  <link rel="stylesheet" href="styles.css">
+  <% var daysInWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday','Sunday'];
+    var count =0;
+   %>
+</head>
+<body>
+  <table style="width:100%" class='table table-hover table-inverse' id='t2' >
+    <thead>
+      <tr>
+            <th style="width:20%">Total Hours</th>
+            <th style="width:20%">Project</th>
+            <th style="width:50%">Description</th>
+            <th style="width:10%">Hours</th>
+        </tr>
+      </thead>
+      <tbody>
+       <% for(var i=0; count < 4; i++ ) { %>
+        <tr>
+          <td class="blue_bg" colspan="4" ><b><%- daysInWeek[i] -%></b></td>
+          <%
+          if(i==6){
+            i=-1;
+            count++;
+          }
+
+        } %>
+        <tr>
+
+</body>
+</html>

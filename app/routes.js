@@ -14,7 +14,7 @@ con.query('USE '+ dbconfig.database);
 		getNames(con,function(err,resu){
 			if(err) console.log(err);
 			else{
-				console.log(resu[0]);
+				//console.log(resu[0]);
 				res.render('land.ejs',{ result : resu});
 			}
 		});
@@ -24,8 +24,23 @@ con.query('USE '+ dbconfig.database);
 	// Home page post section
 
 	app.post('/', function(req, res){
+		//Get posted information
 		console.log(req.body.user);
-		console.log(req.body.date);
+		//Divide frist and last name
+		var name = req.body.user.split(" ");
+		var dateB = req.body.date+"-01";
+		var dateE = req.body.date+"-31";
+		//Get ID from user name
+		getID(con,name,function(err,resu){
+			if(err){ console.log(err);}
+			else{
+				console.log(resu[0].User_ID);
+
+			}
+		})
+
+		console.log(dateB);
+		console.log(dateE);
 		res.render('head.ejs')
 	});
 
@@ -105,6 +120,26 @@ function getNames(con,callback){
 
 	})
 }
+
+function getID(con,name,callback){
+	con.query("SELECT User_ID from hcdd1user where FirstName=? AND LastName=?",[name[0],name[1]],function(err,res){
+		if(err) callback(err,null);
+		else{
+			console.log("Get ID result");
+			callback(null,res);
+		}
+	})
+}
+
+function getProject(con,id,dateB,dateE,callback){
+	con.query("SELECT * from hcdd1swt WHERE TimeDate BETWEEN ? AND ? AND User_ID=?  ",[dateB,dateE,id],function(err,res){
+		if(err) callback(err,null);
+		else{
+			callback(null,res);
+		}
+	})
+}
+
 // route middleware to make sure
 function isLoggedIn(req, res, next) {
 
