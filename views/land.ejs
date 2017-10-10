@@ -1,0 +1,58 @@
+<!-- views/profile.ejs -->
+<!doctype html>
+<html>
+<head>
+	<title>Node Authentication</title>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+	<style>
+		body 		{ padding-top:80px; word-wrap:break-word; }
+	</style>
+	<% include head %>
+</head>
+<body>
+<div class="container">
+
+	<div class="page-header text-center">
+		<h1><span class="fa fa-anchor"></span> Profile Page</h1>
+		<a href="/logout" class="btn btn-default btn-sm">Logout</a>
+	</div>
+
+	<div >
+
+
+
+			</div>
+		</div>
+
+	</div>
+</br>
+<div class="container">
+	<form>
+		<div class="form-group" style="margin:100">
+			<label for="sel1">Select User:</label></br></br>
+			<select class="form-control" id="sel1">
+				<% result.forEach(function(data) { %>
+				 <option><%= data.FirstName %> - <%= data.LastName %> </option>
+				 <% }); %>
+			 </select>
+		 </br><br><br>
+			 <label for="date">Select Month and Year:</label></br></br>
+			 <input type="month" class="form-control" id="date">
+		 </br>
+
+
+			<button style="float:right" type="submit" class="btn btn-primary">Submit </button>
+			 </div>
+		</form>
+	</div>
+
+
+</div>
+</body>
+</html>
+<!--
+ <% result.forEach(function(data) { %>
+	<li><%= data.Dept %> </li>
+	<% }); %>
+-->
