@@ -28,17 +28,17 @@
 	</div>
 </br>
 <div class="container">
-	<form>
+	<form action="/" method="post">
 		<div class="form-group" style="margin:100">
 			<label for="sel1">Select User:</label></br></br>
-			<select class="form-control" id="sel1">
+			<select class="form-control" id="sel1" name="user">
 				<% result.forEach(function(data) { %>
 				 <option><%= data.FirstName %> - <%= data.LastName %> </option>
 				 <% }); %>
 			 </select>
 		 </br><br><br>
 			 <label for="date">Select Month and Year:</label></br></br>
-			 <input type="month" class="form-control" id="date">
+			 <input type="month" class="form-control" id="date" name="date">
 		 </br>
 
 

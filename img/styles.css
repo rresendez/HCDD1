@@ -266,7 +266,7 @@ body {font-family: 'Lato', sans-serif; background-image: url("tin2.png"); backgr
    color: red; /*Change active text color here*/
     }
 .form-control {
-   width:150px !important;
+   width:200px !important;
    float:left !important;
      margin-right: 0.5em;
 

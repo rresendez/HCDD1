@@ -21,6 +21,13 @@ con.query('USE '+ dbconfig.database);
 
 		 // load the index.ejs file
 	});
+	// Home page post section
+
+	app.post('/', function(req, res){
+		console.log(req.body.user);
+		console.log(req.body.date);
+		res.render('head.ejs')
+	});
 
 	app.get('/index', function(req, res) {
 		res.render('index.ejs'); // load the index.ejs file
