@@ -3,6 +3,7 @@
 <style type="text/css">
 .blue_bg{ background-color:#5ccbf0; }
 .head{ background-color: #14a2d2}
+.new{position: fixed; bottom: 2;}
 
 table, th, td {
     border: 1px solid black;
@@ -28,7 +29,7 @@ table, th, td {
 
 
     %>
-  
+
     <% } %>
   <table style="width:100%" class='table table-hover table-inverse' id='t2' >
     <thead>
@@ -79,7 +80,20 @@ table, th, td {
             <% } })  }
 
         } %>
+        <% if(typeof query !='undefined')
+        {  %>
+        </br></br><hr>
+        <div class="container">
+        <form action="/" method="post">
+          <input type="text" name="ID" value="<%- user -%>">
+          <button style="float:right; margin-right:1.5em" type="submit" class="btn btn-info">Create </button>
 
+
+
+        </form>
+      </div>
+      </br><hr>
+          <% } %>
 
 </body>
 <% function weekAndDay(date) {

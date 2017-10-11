@@ -27,6 +27,7 @@ con.query('USE '+ dbconfig.database);
 		//Get posted information
 		console.log(req.body.user);
 		//Divide frist and last name
+		if(typeof req.body.user != "undefined"){
 		var name = req.body.user.split(" ");
 		var dateB = req.body.date+"-01";
 		var dateE = req.body.date+"-31";
@@ -39,11 +40,14 @@ con.query('USE '+ dbconfig.database);
 					if(err) console.log(err);
 					else{
 						//console.log(resu[0]);
-						res.render('land.ejs',{ result : resu, query : result });
+						res.render('land.ejs',{ result : resu, query : result, user: name[2] });
 					}
 				});
 			}
 		})
+	}else{
+		res.render('land.ejs');
+	}
 
 		console.log("ID "+name[2]);
 		console.log(dateB);
