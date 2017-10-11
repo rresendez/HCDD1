@@ -3,6 +3,7 @@ module.exports = function(app, passport) {
 
 var mysql = require('mysql');
 var dbconfig = require('../config/database_2');
+
 var con = mysql.createConnection(dbconfig.connection);
 
 con.query('USE '+ dbconfig.database);
@@ -45,13 +46,25 @@ con.query('USE '+ dbconfig.database);
 				});
 			}
 		})
-	}else{
+	}else if (typeof req.body.ID !="undefined") {
+		console.log("We got the Id "+ req.body.ID)
+		insertNew(con,req.body.ID,req.body.date,req.body.project,req.body.description,req.body.time,function(err,result){
+			if(err) console.log(err);
+			else{
+				console.log(result);
+				res.render('land.ejs');
+			}
+
+		})
+
+	}
+
+
+	else{
 		res.render('land.ejs');
 	}
 
-		console.log("ID "+name[2]);
-		console.log(dateB);
-		console.log(dateE);
+
 
 	});
 
@@ -121,7 +134,7 @@ con.query('USE '+ dbconfig.database);
 		res.redirect('/');
 	});
 };
-
+// Funciton get name
 function getNames(con,callback){
 	con.query("SELECT * from hcdd1user ",function (err,res){
 		if(err) callback(err,null);
@@ -132,7 +145,7 @@ function getNames(con,callback){
 	})
 }
 
-
+//function to get prject info and calculate time
 
 function getProject(con,id,dateB,dateE,callback){
 	con.query("SELECT * , TIMESTAMPDIFF(MINUTE,TimeIn,TimeOut) AS 'Total' from hcdd1swt WHERE TimeDate BETWEEN ? AND ? AND User_ID=?  ",[dateB,dateE,id],function(err,res){
@@ -143,6 +156,16 @@ function getProject(con,id,dateB,dateE,callback){
 	})
 }
 
+function insertNew(con,id,date,project,description,time,callback){
+	var dialog = require('dialog');
+	con.query("INSERT INTO hcdd1swt(User_ID,TimeDate,Proj_ID,PDesc,TimeIn) VALUES(?,?,?,?,?)",[id,date,project,description,time],function(err,res){
+		if(err) callback(err,null);
+		else{
+			dialog.info('New Entry Created!');
+			callback(null,res);
+		}
+	})
+}
 // route middleware to make sure
 function isLoggedIn(req, res, next) {
 

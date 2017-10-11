@@ -6,7 +6,7 @@
 .new{position: fixed; bottom: 2;}
 
 table, th, td {
-    border: 1px solid black;
+    border: 2px solid black;
 }
 </style>
   <link rel="stylesheet" href="styles.css">
@@ -84,10 +84,15 @@ table, th, td {
         {  %>
         </br></br><hr>
         <div class="container">
+          <h2 align="center">Create new entry </h2></br>
         <form action="/" method="post">
-          <input type="text" name="ID" value="<%- user -%>">
-          <button style="float:right; margin-right:1.5em" type="submit" class="btn btn-info">Create </button>
-
+          <input hidden type="text" name="ID" value="<%- user -%>">
+          <label for="date">Select Date:</label><label for="number">Project Number</label></br></br>
+   			 <input type="date" class="form-control" id="date" name="date" placeholder="Date">
+         <input type="number" name="project" placeholder="Project number" class="form-control" >
+         <input type="text" name="description" placeholder="Project description" class="form-control" >
+         <input style="width:10" type="number" placeholder="Time" value="Time" class="form-control" >
+           <button style="float:right; margin-right:1.5em" type="submit" class="btn btn-info">Create </button>
 
 
         </form>
