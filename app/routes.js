@@ -31,17 +31,24 @@ con.query('USE '+ dbconfig.database);
 		var dateB = req.body.date+"-01";
 		var dateE = req.body.date+"-31";
 		//Get ID from user name
-		getID(con,name,function(err,resu){
-			if(err){ console.log(err);}
+		getProject(con,name[2],dateB,dateE,function(err,result){
+			if(err) console.log(err);
 			else{
-				console.log(resu[0].User_ID);
-
+				console.log(result);
+				getNames(con,function(err,resu){
+					if(err) console.log(err);
+					else{
+						//console.log(resu[0]);
+						res.render('land.ejs',{ result : resu, query : result });
+					}
+				});
 			}
 		})
 
+		console.log("ID "+name[2]);
 		console.log(dateB);
 		console.log(dateE);
-		res.render('head.ejs')
+
 	});
 
 	app.get('/index', function(req, res) {
@@ -121,18 +128,10 @@ function getNames(con,callback){
 	})
 }
 
-function getID(con,name,callback){
-	con.query("SELECT User_ID from hcdd1user where FirstName=? AND LastName=?",[name[0],name[1]],function(err,res){
-		if(err) callback(err,null);
-		else{
-			console.log("Get ID result");
-			callback(null,res);
-		}
-	})
-}
+
 
 function getProject(con,id,dateB,dateE,callback){
-	con.query("SELECT * from hcdd1swt WHERE TimeDate BETWEEN ? AND ? AND User_ID=?  ",[dateB,dateE,id],function(err,res){
+	con.query("SELECT * , TIMESTAMPDIFF(MINUTE,TimeIn,TimeOut) AS 'Total' from hcdd1swt WHERE TimeDate BETWEEN ? AND ? AND User_ID=?  ",[dateB,dateE,id],function(err,res){
 		if(err) callback(err,null);
 		else{
 			callback(null,res);

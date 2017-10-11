@@ -33,7 +33,7 @@
 			<label for="sel1">Select User:</label></br></br>
 			<select class="form-control" id="sel1" name="user">
 				<% result.forEach(function(data) { %>
-				 <option><%= data.FirstName %>   <%= data.LastName %> </option>
+				 <option><%= data.FirstName %>   <%= data.LastName %>  <%= data.User_ID %>  </option>
 				 <% }); %>
 			 </select>
 		 </br><br><br>
@@ -45,6 +45,7 @@
 			<button style="float:right" type="submit" class="btn btn-primary">Submit </button>
 			 </div>
 		</form>
+	
 		<% include table %>
 	</div>
 

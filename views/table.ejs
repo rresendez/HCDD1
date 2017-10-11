@@ -1,7 +1,8 @@
 <html>
 <head>
 <style type="text/css">
-.blue_bg{ background-color:#1AB7EA; }
+.blue_bg{ background-color:#5ccbf0; }
+.head{ background-color: #14a2d2}
 
 table, th, td {
     border: 1px solid black;
@@ -13,9 +14,25 @@ table, th, td {
    %>
 </head>
 <body>
+  <% if(typeof query !='undefined') {
+
+
+
+     query.forEach(function(data){
+       console.log("ID "+data.id);
+       data.day= data.TimeDate.getDay()-1;
+       console.log("Number of day: "+data.day);
+       data.week= weekAndDay(data.TimeDate);
+       console.log("Number of week: "+data.week);
+     })
+
+
+    %>
+  
+    <% } %>
   <table style="width:100%" class='table table-hover table-inverse' id='t2' >
     <thead>
-      <tr>
+      <tr class="head">
             <th style="width:20%">Total Hours</th>
             <th style="width:20%">Project</th>
             <th style="width:50%">Description</th>
@@ -23,17 +40,68 @@ table, th, td {
         </tr>
       </thead>
       <tbody>
-       <% for(var i=0; count < 4; i++ ) { %>
+       <% for(var i=0; count < 5; i++ )
+        {
+          %>
         <tr>
           <td class="blue_bg" colspan="4" ><b><%- daysInWeek[i] -%></b></td>
+        </tr>
           <%
+          //Test for new week
           if(i==6){
             i=-1;
             count++;
           }
+          //Loop trough query
+          if(typeof query !='undefined') {
+
+
+
+             query.forEach(function(data){
+                    if(data.day==i && data.week==count){
+
+                      console.log("Data Total: "+data.Total);
+
+                      data.Total = minutes2H(data.Total);
+
+                      console.log("After minutes to hours: "+data.Total);
+
+
+
+                  %>
+                 <tr>
+                   <td><%- data.TimeDate -%></td>
+                   <td><%- data.Proj_ID -%></td>
+                   <td><%- data.PDesc -%></td>
+                   <td><%- data.Total -%></td>
+                 </tr>
+
+            <% } })  }
 
         } %>
-        <tr>
+
 
 </body>
+<% function weekAndDay(date) {
+
+
+
+        var prefixes = [0, 1, 2, 3, 4];
+
+    return prefixes[0 | date.getDate() / 7];
+
+}
+
+function minutes2H(a){
+  var hours = Math.trunc(a/60);
+  console.log(hours);
+  var minutes = a % 60;
+  console.log(minutes);
+  hours = JSON.stringify(hours);
+  minutes = JSON.stringify(minutes);
+  var result = hours+":"+minutes;
+  return result;
+}
+
+ %>
 </html>

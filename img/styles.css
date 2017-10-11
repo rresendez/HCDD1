@@ -253,7 +253,7 @@ body {font-family: 'Lato', sans-serif; background-image: url("tin2.png"); backgr
 	padding: 0;
 }
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
-  background-color: #51b949;
+  background-color: #95d491;
 }
 .btn {
     margin-right: 0.5em;
