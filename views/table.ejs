@@ -58,9 +58,12 @@ table, th, td {
        <% for(var i=0; count < 5; i++ )
         {
           %>
+
+          <% if(i<7){ %>
         <tr>
           <td class="blue_bg" colspan="4" ><b><%- daysInWeek[i] -%></b></td>
         </tr>
+        <% } %>
           <%
           //Test for new week
           if(i==7){
@@ -76,7 +79,7 @@ table, th, td {
 
 
              query.forEach(function(data){
-                    if(data.day==i && data.week==count){
+                    if(data.day==i && data.week==count && i<7){
 
                       console.log("Data Total: "+data.Total);
 
