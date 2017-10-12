@@ -34,6 +34,7 @@ table, th, td {
     %>
 
     <% } %>
+    <div class="container">
   <table style="width:100%" class='table table-hover table-inverse' id='t2' >
     <thead>
       <tr class="head">
@@ -89,7 +90,8 @@ table, th, td {
         <% if(typeof query !='undefined')
         {  %>
         </br></br><hr>
-        <div class="container">
+      </div>
+        <div class="container" id="new">
           <h2 align="center">Create new entry </h2></br>
         <form action="/" method="post">
           <input hidden type="text" name="ID" value="<%- user -%>">
