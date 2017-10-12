@@ -1,21 +1,24 @@
 // app/routes.js
 module.exports = function(app, passport) {
 
+// This get the sql library
+
 var mysql = require('mysql');
+//database configuration set up for local connection
 var dbconfig = require('../config/database_2');
-
+//Create conection with current db configuration
 var con = mysql.createConnection(dbconfig.connection);
-
+// Make sure to use the correct database
 con.query('USE '+ dbconfig.database);
 	// =====================================
 	// HOME PAGE (with login links) ========
 	// =====================================
 	app.get('/', function(req, res) {
-
+//Get names funciton gets users from users table and passes it to the ejs form
 		getNames(con,function(err,resu){
 			if(err) console.log(err);
 			else{
-				//console.log(resu[0]);
+				//render land.ejs and pass result from query
 				res.render('land.ejs',{ result : resu});
 			}
 		});
@@ -29,7 +32,9 @@ con.query('USE '+ dbconfig.database);
 		console.log(req.body.user);
 		//Check for input to search projects
 		if(typeof req.body.user != "undefined"){
+	// Divides name and user number in a 3 index array
 		var name = req.body.user.split(" ");
+	// Set time range for one month
 		var dateB = req.body.date+"-01";
 		var dateE = req.body.date+"-31";
 		//Get ID from user name
@@ -41,7 +46,7 @@ con.query('USE '+ dbconfig.database);
 					if(err) console.log(err);
 					else{
 						//console.log(resu[0]);
-						res.render('land.ejs',{ result : resu, query : result, user: name[2] });
+						res.render('land.ejs',{ result : resu, query : result, user: name });
 					}
 				});
 			}
@@ -49,9 +54,14 @@ con.query('USE '+ dbconfig.database);
 	}
 //This checks for new entrie creation
 	else if (typeof req.body.ID !="undefined") {
-		console.log("We got the Id "+ req.body.ID)
-		insertNew(con,req.body.ID,req.body.date,req.body.project,req.body.description,req.body.timeI,req.body.timeO,function(err,result){
-			if(err) console.log(err);
+			var id = req.body.ID.split(",");
+		console.log("We got the Id "+ id[2]);
+		insertNew(con,id[2],req.body.date,req.body.project,req.body.description,req.body.timeI,req.body.timeO,function(err,result){
+			if(err) {
+				console.log(err);
+				dialog.info("Could Not Create Entry!");
+			}
+
 			else{
 				console.log(result);
 				getNames(con,function(err,resu){

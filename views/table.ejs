@@ -3,10 +3,12 @@
 <style type="text/css">
 .blue_bg{ background-color:#5ccbf0; }
 .bluer_bg{ background-color:#14a2d2; }
-.head{ background-color: #14a2d2}
+.head{ background-color: #14a2d2; webkit-print-color-adjust: exact;}
 .new{position: fixed; bottom: 2;}
 .label{display:block;}
-
+body{
+  -webkit-print-color-adjust:exact;
+}
 
 table, th, td {
     border: 2px solid black;
@@ -25,19 +27,27 @@ table, th, td {
      query.forEach(function(data){
        console.log("ID "+data.id);
        data.day= data.TimeDate.getDay()-1;
+       if(data.day==-1){
+         data.day=6;
+       }
        console.log("Number of day: "+data.day);
        data.week= weekAndDay(data.TimeDate);
        console.log("Number of week: "+data.week);
      })
 
+        var first = user[0];
+        var second = user[1];
+        var num = user[2];
 
     %>
 
+
     <% } %>
     <div class="container">
+
   <table style="width:100%" class='table table-hover table-inverse' id='t2' >
-    <thead>
-      <tr class="head">
+    <thead >
+      <tr class="head" >
             <th style="width:20%">Total Hours</th>
             <th style="width:20%">Project</th>
             <th style="width:50%">Description</th>
@@ -53,7 +63,7 @@ table, th, td {
         </tr>
           <%
           //Test for new week
-          if(i==6){
+          if(i==7){
             i=-1;
             count++; if(count<5){ %>
             <tr>
@@ -89,9 +99,10 @@ table, th, td {
         } %>
         <% if(typeof query !='undefined')
         {  %>
-        </br></br><hr>
+        </br><hr>
       </div>
         <div class="container" id="new">
+        </br>
           <h2 align="center">Create new entry </h2></br>
         <form action="/" method="post">
           <input hidden type="text" name="ID" value="<%- user -%>">
@@ -99,14 +110,15 @@ table, th, td {
          <input type="number" name="project" placeholder="Project number" class="form-control" >
          <input type="text" name="description" placeholder="Project description" class="form-control" >
          <input style="width:10" type="time" placeholder="Time In" value="TimeI" name="timeI" class="form-control" id="timeI" title="Time in" />
-         <input style="width:10" type="time" placeholder="Time Out" value="TimeO"  name="timeO" class="form-control" id="timeO" title="Time out"/ >
+         <input style="width:10" type="time" placeholder="Time Out" value="TimeO"  name="timeO" class="form-control" id="timeO" title="Time out"/ ></br></br>
 
            <button style="float:right; margin-right:1.5em" type="submit" class="btn btn-info">Create </button>
 
 
         </form>
       </div>
-      </br><hr>
+    </br><hr></br></br>
+    <h2 align="center" style="margin-left:100"><%- first -%>   <%- second -%> | <%- num -%> </h2></br></br>
           <% } %>
 
 </body>

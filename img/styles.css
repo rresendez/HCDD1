@@ -55,6 +55,15 @@ h2{
     div.row {
       display: block;
     }
+    hr{
+      display: none;
+    }
+    .head{
+      color:red;
+      background-color:red !important;
+      -webkit-print-color-adjust: exact !important;
+
+    }
 
     #head{
       display: none;
@@ -209,6 +218,7 @@ h2{
 html, body {
     margin: 0;
     padding: 25;
+    -webkit-print-color-adjust:exact;
 
 }
 
