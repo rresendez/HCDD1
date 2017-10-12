@@ -2,8 +2,11 @@
 <head>
 <style type="text/css">
 .blue_bg{ background-color:#5ccbf0; }
+.bluer_bg{ background-color:#14a2d2; }
 .head{ background-color: #14a2d2}
 .new{position: fixed; bottom: 2;}
+.label{display:block;}
+
 
 table, th, td {
     border: 2px solid black;
@@ -51,8 +54,11 @@ table, th, td {
           //Test for new week
           if(i==6){
             i=-1;
-            count++;
-          }
+            count++; if(count<5){ %>
+            <tr>
+              <td  align="center" class="bluer_bg" colspan="4" ><b>WEEK </b><b><%- count+1 -%></b></td>
+            </tr>
+          <%}}
           //Loop trough query
           if(typeof query !='undefined') {
 
@@ -87,11 +93,12 @@ table, th, td {
           <h2 align="center">Create new entry </h2></br>
         <form action="/" method="post">
           <input hidden type="text" name="ID" value="<%- user -%>">
-          <label for="date">Select Date:</label><label for="number">Project Number</label></br></br>
-   			 <input type="date" class="form-control" id="date" name="date" placeholder="Date">
+   			 <input type="date" class="form-control" id="date" name="date" placeholder="Date" title="Date">
          <input type="number" name="project" placeholder="Project number" class="form-control" >
          <input type="text" name="description" placeholder="Project description" class="form-control" >
-         <input style="width:10" type="number" placeholder="Time" value="Time" class="form-control" >
+         <input style="width:10" type="time" placeholder="Time In" value="TimeI" name="timeI" class="form-control" id="timeI" title="Time in" />
+         <input style="width:10" type="time" placeholder="Time Out" value="TimeO"  name="timeO" class="form-control" id="timeO" title="Time out"/ >
+
            <button style="float:right; margin-right:1.5em" type="submit" class="btn btn-info">Create </button>
 
 

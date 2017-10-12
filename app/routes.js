@@ -27,7 +27,7 @@ con.query('USE '+ dbconfig.database);
 	app.post('/', function(req, res){
 		//Get posted information
 		console.log(req.body.user);
-		//Divide frist and last name
+		//Check for input to search projects
 		if(typeof req.body.user != "undefined"){
 		var name = req.body.user.split(" ");
 		var dateB = req.body.date+"-01";
@@ -46,13 +46,21 @@ con.query('USE '+ dbconfig.database);
 				});
 			}
 		})
-	}else if (typeof req.body.ID !="undefined") {
+	}
+//This checks for new entrie creation
+	else if (typeof req.body.ID !="undefined") {
 		console.log("We got the Id "+ req.body.ID)
-		insertNew(con,req.body.ID,req.body.date,req.body.project,req.body.description,req.body.time,function(err,result){
+		insertNew(con,req.body.ID,req.body.date,req.body.project,req.body.description,req.body.timeI,req.body.timeO,function(err,result){
 			if(err) console.log(err);
 			else{
 				console.log(result);
-				res.render('land.ejs');
+				getNames(con,function(err,resu){
+					if(err) console.log(err);
+					else{
+						//console.log(resu[0]);
+						res.render('land.ejs',{ result : resu});
+					}
+				});
 			}
 
 		})
@@ -156,9 +164,9 @@ function getProject(con,id,dateB,dateE,callback){
 	})
 }
 
-function insertNew(con,id,date,project,description,time,callback){
+function insertNew(con,id,date,project,description,timeI,timeO,callback){
 	var dialog = require('dialog');
-	con.query("INSERT INTO hcdd1swt(User_ID,TimeDate,Proj_ID,PDesc,TimeIn) VALUES(?,?,?,?,?)",[id,date,project,description,time],function(err,res){
+	con.query("INSERT INTO hcdd1swt(User_ID,TimeDate,Proj_ID,PDesc,TimeIn,TimeOut) VALUES(?,?,?,?,?,?) ",[id,date,project,description,timeI,timeO],function(err,res){
 		if(err) callback(err,null);
 		else{
 			dialog.info('New Entry Created!');
