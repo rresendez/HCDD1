@@ -115,7 +115,7 @@ table, th, td {
         } %>
         <tfoot>
           <tr class="foot" >
-            <td colspan="3">Total:</td><td><%- timeT -%></td>
+            <td colspan="3" align="right"><b>TOTAL HOURS : <b></td><td><%- timeT -%></td>
             <tr>
             </tfoot>
         <% if(typeof query !='undefined')
@@ -157,10 +157,19 @@ function minutes2H(a){
   var hours = Math.trunc(a/60);
   console.log(hours);
   var minutes = a % 60;
+  if(minutes < 10){
+
+    minutes="0"+minutes;
+    minutes= minutes.toString();
+    minutes = minutes.replace(/['"]+/g, '');
+
+  }
   console.log(minutes);
   hours = JSON.stringify(hours);
+  if(minutes>9){
   minutes = JSON.stringify(minutes);
-  var result = hours+":"+minutes;
+}
+  var result = hours+" : "+minutes;
   return result;
 }
 

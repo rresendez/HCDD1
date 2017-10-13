@@ -32,18 +32,22 @@ con.query('USE '+ dbconfig.database);
 	app.post('/', function(req, res){
 		//Get posted information
 		console.log(req.body.user);
+		console.log("Project Id: "+req.body.pid);
+		console.log("Type of Project Id: "+ typeof(req.body.pid));
 		//Check for input to search projects
-		if(typeof req.body.user != "undefined"){
+		if((typeof req.body.user != "undefined" ) && req.body.pid.length<1  ){
 	// Divides name and user number in a 3 index array
 		var name = req.body.user.split(" ");
 	// Set time range for one month
 		var dateB = req.body.date+"-01";
 		var dateE = req.body.date+"-31";
 		//Get ID from user name
+
 		getProject(con,name[2],dateB,dateE,function(err,result){
 			if(err) console.log(err);
 			else{
 				console.log(result);
+				console.log("Project number: "+ req.body.pid);
 		// We still need the names to pass to the land.ejs page to display drop down menu
 				getNames(con,function(err,resu){
 					if(err) console.log(err);
@@ -54,10 +58,37 @@ con.query('USE '+ dbconfig.database);
 				});
 			}
 		})
+	} else if(typeof req.body.pid != "undefined"){
+		// Divides name and user number in a 3 index array
+			var name = req.body.user.split(" ");
+		// Set time range for one month
+			var dateB = req.body.date+"-01";
+			var dateE = req.body.date+"-31";
+			//Get ID from user name
+
+			getProjectID(con,name[2],dateB,dateE,req.body.pid,function(err,result){
+				if(err) console.log(err);
+				else{
+					console.log(result);
+					console.log("Project number: "+ req.body.pid);
+			// We still need the names to pass to the land.ejs page to display drop down menu
+					getNames(con,function(err,resu){
+						if(err) console.log(err);
+						else{
+							//render land ejs passing result of query user name and bunch of other things!
+							res.render('land.ejs',{ result : resu, query : result, user: name });
+						}
+					});
+				}
+			})
+
+
 	}
 //This checks for new entrie creation if we have an user id deffined
 	else if (typeof req.body.ID !="undefined") {
 		//This is oging to split hte name last name and id into an array
+
+
 			var id = req.body.ID.split(",");
 		console.log("We got the Id "+ id[2]);
 		insertNew(con,id[2],req.body.date,req.body.project,req.body.description,req.body.timeI,req.body.timeO,function(err,result){
@@ -179,6 +210,16 @@ function getNames(con,callback){
 
 function getProject(con,id,dateB,dateE,callback){
 	con.query("SELECT * , TIMESTAMPDIFF(MINUTE,TimeIn,TimeOut) AS 'Total' from hcdd1swt WHERE TimeDate BETWEEN ? AND ? AND User_ID=?  ",[dateB,dateE,id],function(err,res){
+		if(err) callback(err,null);
+		else{
+			callback(null,res);
+		}
+	})
+}
+
+//funciton get project with project number
+function getProjectID(con,id,dateB,dateE,pid,callback){
+	con.query("SELECT * , TIMESTAMPDIFF(MINUTE,TimeIn,TimeOut) AS 'Total' from hcdd1swt WHERE TimeDate BETWEEN ? AND ? AND User_ID=? AND Proj_ID=? ",[dateB,dateE,id,pid],function(err,res){
 		if(err) callback(err,null);
 		else{
 			callback(null,res);
