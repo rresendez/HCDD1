@@ -6,7 +6,7 @@ module.exports = function(app, passport) {
 var mysql = require('mysql');
 //database configuration set up for local connection
 var dbconfig = require('../config/database_2');
-
+//Date formating thing
 
 //Create conection with current db configuration
 var con = mysql.createConnection(dbconfig.connection);

@@ -4,6 +4,7 @@
 .blue_bg{ background-color:#5ccbf0; }
 .bluer_bg{ background-color:#14a2d2; }
 .head{ background-color: #14a2d2; webkit-print-color-adjust: exact;}
+.foot{ background-color: #0f7ea3; color:white; font-weight: bold;webkit-print-color-adjust: exact;}
 .new{position: fixed; bottom: 2;}
 .label{display:block;}
 body{
@@ -22,6 +23,7 @@ table, th, td {
 <body>
   <% if(typeof query !='undefined') {
 
+        var timeT=0;
 
 
      query.forEach(function(data){
@@ -33,11 +35,15 @@ table, th, td {
        console.log("Number of day: "+data.day);
        data.week= weekAndDay(data.TimeDate);
        console.log("Number of week: "+data.week);
+       timeT = data.Total+timeT;
      })
 
         var first = user[0];
         var second = user[1];
         var num = user[2];
+        console.log("This is time total in minutes dawg: "+ timeT );
+        timeT=minutes2H(timeT);
+        console.log("This is time total but in hours fool!:"+ timeT );
 
     %>
 
@@ -107,6 +113,11 @@ table, th, td {
             <% } })  }
 
         } %>
+        <tfoot>
+          <tr class="foot" >
+            <td colspan="3">Total:</td><td><%- timeT -%></td>
+            <tr>
+            </tfoot>
         <% if(typeof query !='undefined')
         {  %>
         </br><hr>
@@ -138,7 +149,7 @@ table, th, td {
 
         var prefixes = [0, 1, 2, 3, 4];
 
-    return prefixes[0 | date.getDate() / 7];
+    return prefixes[0 | date.getDate() / 8];
 
 }
 
