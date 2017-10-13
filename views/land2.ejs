@@ -1,0 +1,53 @@
+<!-- views/profile.ejs -->
+<!doctype html>
+<html>
+<head>
+	<title>Weekly Timesheet</title>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+	<style>
+		body 		{ padding-top:80px; word-wrap:break-word; }
+	</style>
+	<% if(status){ %>
+	<script> alert("New entry successfully created!");</script>
+	<%}else{%>
+		<script> alert("Could not create new entry!");</script>
+		<%}%>
+</head>
+<body>
+	<% include head %>
+<div class="container">
+
+	<div class="page-header text-center">
+		<h1><span class="fa fa-clock-o"></span> Weekly Timesheet</h1>
+
+
+	</div>
+		</div>
+
+
+</br>
+<div class="container" id="land">
+	<form action="/" method="post">
+		<div class="form-group" style="margin:100">
+			<label for="sel1">Select User:</label></br></br>
+			<select class="form-control" id="sel1" name="user" placeholder="User">
+				<%  if(typeof result !="undefined"){ result.forEach(function(data) { %>
+				 <option><%= data.FirstName %>   <%= data.LastName %>  <%= data.User_ID %>  </option>
+				 <% }); }%>
+			 </select>
+		 </br><br><br>
+			 <label for="date">Select Month and Year:</label></br></br>
+			 <input type="month" class="form-control" id="date" name="date">
+		 </br>
+
+
+			<button style="float:right" type="submit" class="btn btn-success">Search </button>
+			 </div>
+		</form>
+
+
+	</div>
+	<% include table %>
+</body>
+</html>

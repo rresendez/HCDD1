@@ -6,6 +6,8 @@ module.exports = function(app, passport) {
 var mysql = require('mysql');
 //database configuration set up for local connection
 var dbconfig = require('../config/database_2');
+
+
 //Create conection with current db configuration
 var con = mysql.createConnection(dbconfig.connection);
 // Make sure to use the correct database
@@ -42,24 +44,34 @@ con.query('USE '+ dbconfig.database);
 			if(err) console.log(err);
 			else{
 				console.log(result);
+		// We still need the names to pass to the land.ejs page to display drop down menu
 				getNames(con,function(err,resu){
 					if(err) console.log(err);
 					else{
-						//console.log(resu[0]);
+						//render land ejs passing result of query user name and bunch of other things!
 						res.render('land.ejs',{ result : resu, query : result, user: name });
 					}
 				});
 			}
 		})
 	}
-//This checks for new entrie creation
+//This checks for new entrie creation if we have an user id deffined
 	else if (typeof req.body.ID !="undefined") {
+		//This is oging to split hte name last name and id into an array
 			var id = req.body.ID.split(",");
 		console.log("We got the Id "+ id[2]);
 		insertNew(con,id[2],req.body.date,req.body.project,req.body.description,req.body.timeI,req.body.timeO,function(err,result){
 			if(err) {
 				console.log(err);
-				dialog.info("Could Not Create Entry!");
+				getNames(con,function(err,resu){
+					if(err) console.log(err);
+					else{
+						//console.log(resu[0]);
+						res.render('land2.ejs',{ result : resu, status : false});
+					}
+				});
+
+
 			}
 
 			else{
@@ -68,7 +80,7 @@ con.query('USE '+ dbconfig.database);
 					if(err) console.log(err);
 					else{
 						//console.log(resu[0]);
-						res.render('land.ejs',{ result : resu});
+						res.render('land2.ejs',{ result : resu, status : true});
 					}
 				});
 			}

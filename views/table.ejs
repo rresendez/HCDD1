@@ -81,6 +81,8 @@ table, th, td {
              query.forEach(function(data){
                     if(data.day==i && data.week==count && i<7){
 
+
+
                       console.log("Data Total: "+data.Total);
 
                       data.Total = minutes2H(data.Total);
@@ -88,10 +90,15 @@ table, th, td {
                       console.log("After minutes to hours: "+data.Total);
 
 
+                        var day = data.TimeDate;
+                        day = JSON.stringify(day);
+                        day = day.slice(1,11);
+
+                        console.log("Day pre formating: "+day);
 
                   %>
                  <tr>
-                   <td><%- data.TimeDate -%></td>
+                   <td><%- day -%></td>
                    <td><%- data.Proj_ID -%></td>
                    <td><%- data.PDesc -%></td>
                    <td><%- data.Total -%></td>
