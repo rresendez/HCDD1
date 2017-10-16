@@ -38,10 +38,15 @@
 			<div class="form-group" style="margin:100">
 				<label for="sel1">Select User:</label></br></br>
 				<select class="form-control" id="sel1" name="user" placeholder="User" >
-					<option value="" selected disabled>Choose here</option>
-					<!-- Display names if the varaibel is defined -->
+
+					<!-- This populates the list of options with the user names lastname and id -->
 					<%  if(typeof result !="undefined"){ result.forEach(function(data) { %>
-					 <option><%= data.FirstName %>   <%= data.LastName %>  <%= data.User_ID %>  </option>
+					<% if(typeof user!="undefined"){ if(user[2]==data.User_ID){
+						console.log("We found a match!");%>
+						<option selected="selected"><%= data.FirstName %>   <%= data.LastName %>  <%= data.User_ID %>  </option>
+				<%	} } %>
+					<% if(user[2]!=data.User_ID){ %><option><%= data.FirstName %>   <%= data.LastName %>  <%= data.User_ID %>  </option>
+						<%}%>
 					 <% }); }%>
 				 </select>
 			 </br><br><br>
