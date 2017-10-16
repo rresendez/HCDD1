@@ -205,7 +205,11 @@ table, th, td {
        <form action="/" method="post">
          <input hidden type="text" name="ID" value="<%- user -%>">
          <input type="date" class="form-control" id="date" name="date" placeholder="yyyy-mm-dd" title="Date">
-        <input type="number" name="project" placeholder="Project number" class="form-control" >
+         <select name="project" placeholder="Project number" class="form-control" >
+         <% projI.forEach(function(data){ %>
+           <option> <%- data.Proj_id -%> <%- data.ProjOfficial -%><%- data.ProjNo -%> <%- data.Owner -%><%- data.Pct -%> </option>
+
+        <% });%>
         <input type="text" name="description" placeholder="Project description" class="form-control" >
         <input style="width:10" type="time" placeholder="Time In" value="TimeI" name="timeI" class="form-control" id="timeI" title="Time in" />
         <input style="width:10" type="time" placeholder="Time Out" value="TimeO"  name="timeO" class="form-control" id="timeO" title="Time out"/ ></br></br>
