@@ -1,5 +1,7 @@
+<!-- This is one of the most complex ejs files it contains the table and the nnew entry creation module -->
 <html>
 <head>
+  <!-- All of this is style for this particular file -->
 <style type="text/css">
 .blue_bg{ background-color:#5ccbf0; }
 .bluer_bg{ background-color:#14a2d2; }
@@ -21,27 +23,32 @@ table, th, td {
    %>
 </head>
 <body>
+  <!-- check if variabel query is defined -->
   <% if(typeof query !='undefined') {
-
+<!-- crate a variable to keep track of the total time -->
         var timeT=0;
 
-
+<!-- Loops to results of the query -->
      query.forEach(function(data){
        console.log("ID "+data.id);
+       <!-- This create the object property day from the query -1 so it will match the iterations of the table starting at 0 for monday -->
        data.day= data.TimeDate.getDay()-1;
+       <!-- Given that sunday is 0 , 0 -1 is -1 , we need it to be 6 -->
        if(data.day==-1){
          data.day=6;
        }
        console.log("Number of day: "+data.day);
        data.week= weekAndDay(data.TimeDate);
        console.log("Number of week: "+data.week);
+       <!-- Make the sum of the total time so far in minutes -->
        timeT = data.Total+timeT;
      })
-
+     <!-- This helps parse the user input in to first last and id -->
         var first = user[0];
         var second = user[1];
         var num = user[2];
         console.log("This is time total in minutes dawg: "+ timeT );
+        <!-- This awesome function will converte minutes to hours -->
         timeT=minutes2H(timeT);
         console.log("This is time total but in hours fool!:"+ timeT );
 
@@ -53,6 +60,7 @@ table, th, td {
 
   <table style="width:100%" class='table table-hover table-inverse' id='t2' >
     <thead >
+      <!-- This is the header of the project table -->
       <tr class="head" >
             <th style="width:20%">Total Hours</th>
             <th style="width:20%">Project</th>
@@ -61,6 +69,7 @@ table, th, td {
         </tr>
       </thead>
       <tbody>
+        <!-- This table is set up to generate 7 days a week for 5 iterations make a total o 5 weeks a month -->
        <% for(var i=0; count < 5; i++ )
         {
           %>
@@ -71,9 +80,11 @@ table, th, td {
         </tr>
         <% } %>
           <%
+          <!-- Since I crate the loop before the rest of the code the loop must go up to 7 to complete each cicle -->
           //Test for new week
           if(i==7){
             i=-1;
+          <!-- Only prints new day if the number of week is equal or lees than 4 -->
             count++; if(count<5){ %>
             <tr>
               <td  align="center" class="bluer_bg" colspan="4" ><b>WEEK </b><b><%- count+1 -%></b></td>
@@ -83,7 +94,7 @@ table, th, td {
           if(typeof query !='undefined') {
 
 
-
+            <!-- This will populate the table only if the day and week matches , also number of day must be less than 7-->
              query.forEach(function(data){
                     if(data.day==i && data.week==count && i<7){
 
@@ -115,9 +126,11 @@ table, th, td {
         } %>
         <tfoot>
           <tr class="foot" >
+            <!-- calculation for the total houes for query -->
             <td colspan="3" align="right"><b>TOTAL HOURS : <b></td><td><%- timeT -%></td>
             <tr>
             </tfoot>
+            <!-- check if there is a user id assigend to session if so generate new entry creator using current session id -->
         <% if(typeof query !='undefined')
         {  %>
         </br><hr>
@@ -127,7 +140,7 @@ table, th, td {
           <h2 align="center">Create new entry </h2></br>
         <form action="/" method="post">
           <input hidden type="text" name="ID" value="<%- user -%>">
-   			 <input type="date" class="form-control" id="date" name="date" placeholder="Date" title="Date">
+   			 <input type="date" class="form-control" id="date" name="date" placeholder="yyyy-mm-dd" title="Date">
          <input type="number" name="project" placeholder="Project number" class="form-control" >
          <input type="text" name="description" placeholder="Project description" class="form-control" >
          <input style="width:10" type="time" placeholder="Time In" value="TimeI" name="timeI" class="form-control" id="timeI" title="Time in" />
@@ -139,6 +152,7 @@ table, th, td {
         </form>
       </div>
     </br><hr></br></br>
+    <!--Diplay the first last and id from select user -->
     <h2 align="center" style="margin-left:100"><%- first -%>   <%- second -%> | <%- num -%> </h2></br></br>
           <% } %>
 

@@ -16,7 +16,7 @@
 
 	<div class="page-header text-center">
 		<h1><span class="fa fa-clock-o"></span> Weekly Timesheet</h1>
-		<a href="/logout" class="btn btn-default btn-sm">Logout</a>
+
 
 
 
@@ -29,15 +29,21 @@
 	<form action="/" method="post">
 		<div class="form-group" style="margin:100">
 			<label for="sel1">Select User:</label></br></br>
-			<select class="form-control" id="sel1" name="user" placeholder="User">
+			<select class="form-control" id="sel1" name="user" placeholder="User" >
+
 				<!-- This populates the list of options with the user names lastname and id -->
 				<%  if(typeof result !="undefined"){ result.forEach(function(data) { %>
-				 <option><%= data.FirstName %>   <%= data.LastName %>  <%= data.User_ID %>  </option>
+				<% if(typeof user!="undefined"){ if(user[2]==data.User_ID){
+					console.log("We found a match!");%>
+					<option selected="selected"><%= data.FirstName %>   <%= data.LastName %>  <%= data.User_ID %>  </option>
+			<%	} } %>
+				<% if(user[2]!=data.User_ID){ %><option><%= data.FirstName %>   <%= data.LastName %>  <%= data.User_ID %>  </option>
+					<%}%>
 				 <% }); }%>
 			 </select>
 		 </br><br><br>
-			 <label for="date">Select Month and Year:   </label><br></br>
-			 <input type="month" class="form-control" id="date" name="date">
+			 <label for="date">Select Month and Year:    </label><br></br>
+			 <input type="month" class="form-control" id="date" name="date" placeholder="yyyy-mm">
 
 
 

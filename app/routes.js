@@ -15,7 +15,7 @@ con.query('USE '+ dbconfig.database);
 	// =====================================
 	// HOME PAGE (with login links) ========
 	// =====================================
-	app.get('/', isLoggedIn, function(req, res) {
+	app.get('/',  function(req, res) {
 //Get names funciton gets users from users table and passes it to the ejs form
 		getNames(con,function(err,resu){
 			if(err) console.log(err);
@@ -29,7 +29,7 @@ con.query('USE '+ dbconfig.database);
 	});
 	// Home page post section
 
-	app.post('/', isLoggedIn, function(req, res){
+	app.post('/',  function(req, res){
 		//Get posted information
 		console.log(req.body.user);
 		//Bunch of informaiton on the project
