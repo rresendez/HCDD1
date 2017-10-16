@@ -42,6 +42,9 @@ con.query('USE '+ dbconfig.database);
 	// Set time range for one month
 		var dateB = req.body.date+"-01";
 		var dateE = req.body.date+"-31";
+		// Get date of the week
+		var weekNum = req.body.week;
+		console.log("Week number: "+weekNum);
 		//Get ID from user name
 
 		getProject(con,name[2],dateB,dateE,function(err,result){
@@ -50,11 +53,15 @@ con.query('USE '+ dbconfig.database);
 				console.log(result);
 				console.log("Project number: "+ req.body.pid);
 		// We still need the names to pass to the land.ejs page to display drop down menu
-				getNames(con,function(err,resu){
-					if(err) console.log(err);
+				getNames(con,function(err1,resu){
+					if(err1) console.log(err1);
 					else{
+						getPInfo(con,function(err2,proj){
 						//render land ejs passing result of query user name and bunch of other things!
-						res.render('land.ejs',{ result : resu, query : result, user: name });
+						if(err2)console.log(err2);
+						else{
+						res.render('land.ejs',{ result : resu, query : result, user: name, weekN: weekNum, projI: proj });
+						}})
 					}
 				});
 			}
@@ -63,6 +70,7 @@ con.query('USE '+ dbconfig.database);
 	} else if(typeof req.body.pid != "undefined"){
 		// Divides name and user number in a 3 index array
 			var name = req.body.user.split(" ");
+
 		// Set time range for one month
 			var dateB = req.body.date+"-01";
 			var dateE = req.body.date+"-31";
@@ -78,7 +86,7 @@ con.query('USE '+ dbconfig.database);
 						if(err) console.log(err);
 						else{
 							//render land ejs passing result of query user name and bunch of other things!
-							res.render('land.ejs',{ result : resu, query : result, user: name });
+							res.render('land.ejs',{ result : resu, query : result, user: name, weekN: req.body.week});
 						}
 					});
 				}
@@ -219,6 +227,18 @@ function getProject(con,id,dateB,dateE,callback){
 		else{
 			callback(null,res);
 		}
+	})
+}
+
+//functio to get infomration about projects
+
+function getPInfo(con,callback){
+	con.query("SELECT * from hcdd1prj ORDER BY ProjOfficial",function (err,res){
+		if(err) callback(err,null);
+		else{
+			callback(null,res);
+		}
+
 	})
 }
 

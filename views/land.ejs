@@ -20,6 +20,7 @@
 
 
 
+
 	</div>
 		</div>
 
@@ -37,7 +38,7 @@
 					console.log("We found a match!");%>
 					<option selected="selected"><%= data.FirstName %>   <%= data.LastName %>  <%= data.User_ID %>  </option>
 			<%	} } %>
-				<% if(user[2]!=data.User_ID){ %><option><%= data.FirstName %>   <%= data.LastName %>  <%= data.User_ID %>  </option>
+				<% if(typeof user=="undefined"||user[2]!=data.User_ID){ %><option><%= data.FirstName %>   <%= data.LastName %>  <%= data.User_ID %>  </option>
 					<%}%>
 				 <% }); }%>
 			 </select>
@@ -52,7 +53,7 @@
 	 </br>
 
 
-			<button style="float:right" type="submit" class="btn btn-success">Search </button>
+			<button style="float:right" type="submit" class="btn btn-success">Select </button>
 			 </div>
 		</form>
 
