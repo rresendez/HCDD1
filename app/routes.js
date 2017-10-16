@@ -15,7 +15,7 @@ con.query('USE '+ dbconfig.database);
 	// =====================================
 	// HOME PAGE (with login links) ========
 	// =====================================
-	app.get('/', function(req, res) {
+	app.get('/', isLoggedIn, function(req, res) {
 //Get names funciton gets users from users table and passes it to the ejs form
 		getNames(con,function(err,resu){
 			if(err) console.log(err);
@@ -29,12 +29,13 @@ con.query('USE '+ dbconfig.database);
 	});
 	// Home page post section
 
-	app.post('/', function(req, res){
+	app.post('/', isLoggedIn, function(req, res){
 		//Get posted information
 		console.log(req.body.user);
+		//Bunch of informaiton on the project
 		console.log("Project Id: "+req.body.pid);
 		console.log("Type of Project Id: "+ typeof(req.body.pid));
-		//Check for input to search projects
+		//Check for input of user but no project id
 		if((typeof req.body.user != "undefined" ) && req.body.pid.length<1  ){
 	// Divides name and user number in a 3 index array
 		var name = req.body.user.split(" ");
@@ -58,6 +59,7 @@ con.query('USE '+ dbconfig.database);
 				});
 			}
 		})
+		//If process Id is defined then make search using process id
 	} else if(typeof req.body.pid != "undefined"){
 		// Divides name and user number in a 3 index array
 			var name = req.body.user.split(" ");
@@ -65,7 +67,7 @@ con.query('USE '+ dbconfig.database);
 			var dateB = req.body.date+"-01";
 			var dateE = req.body.date+"-31";
 			//Get ID from user name
-
+			//Same funaction as get project but this one uses also project id to find projects
 			getProjectID(con,name[2],dateB,dateE,req.body.pid,function(err,result){
 				if(err) console.log(err);
 				else{
@@ -85,15 +87,18 @@ con.query('USE '+ dbconfig.database);
 
 	}
 //This checks for new entrie creation if we have an user id deffined
+//This check for the creation of a new entry
 	else if (typeof req.body.ID !="undefined") {
-		//This is oging to split hte name last name and id into an array
+		//This is going to split the name last name and id into an array
 
 
 			var id = req.body.ID.split(",");
 		console.log("We got the Id "+ id[2]);
+		//This function inserts a new entry to the database
 		insertNew(con,id[2],req.body.date,req.body.project,req.body.description,req.body.timeI,req.body.timeO,function(err,result){
 			if(err) {
 				console.log(err);
+				//Still need to get names to reload landing page with names
 				getNames(con,function(err,resu){
 					if(err) console.log(err);
 					else{
@@ -104,7 +109,7 @@ con.query('USE '+ dbconfig.database);
 
 
 			}
-
+			//Default status where nothing was input just load land2.ejs with names
 			else{
 				console.log(result);
 				getNames(con,function(err,resu){
@@ -128,7 +133,7 @@ con.query('USE '+ dbconfig.database);
 
 
 	});
-
+//We don really ue this route
 	app.get('/index', function(req, res) {
 		res.render('index.ejs'); // load the index.ejs file
 	});
@@ -145,7 +150,7 @@ con.query('USE '+ dbconfig.database);
 
 	// process the login form
 	app.post('/login', passport.authenticate('local-login', {
-            successRedirect : '/profile', // redirect to the secure profile section
+            successRedirect : '/', // redirect to the secure profile section
             failureRedirect : '/login', // redirect back to the signup page if there is an error
             failureFlash : true // allow flash messages
 		}),
@@ -171,7 +176,7 @@ con.query('USE '+ dbconfig.database);
 
 	// process the signup form
 	app.post('/signup', passport.authenticate('local-signup', {
-		successRedirect : '/profile', // redirect to the secure profile section
+		successRedirect : '/', // redirect to the secure profile section
 		failureRedirect : '/signup', // redirect back to the signup page if there is an error
 		failureFlash : true // allow flash messages
 	}));
@@ -245,5 +250,5 @@ function isLoggedIn(req, res, next) {
 		return next();
 
 	// if they aren't redirect them to the home page
-	res.redirect('/');
+	res.redirect('/signup');
 }

@@ -1,4 +1,5 @@
 <!-- views/profile.ejs -->
+<!-- This is basically a copy of the landing page but is used for different situations -->
 <!doctype html>
 <html>
 <head>
@@ -8,11 +9,14 @@
 	<style>
 		body 		{ padding-top:80px; word-wrap:break-word; }
 	</style>
+	<!-- this test for a falg in order to enseurte that the new entry was created successfully -->
 	<% if(status){ %>
 	<script> alert("New entry successfully created!");</script>
+	<!-- if it didn't work then report the user the failure -->
 	<%}else{%>
 		<script> alert("Could not create new entry!");</script>
 		<%}%>
+		<!-- The header we all know and love -->
 		<% include head %>
 		</head>
 		<body>
@@ -20,6 +24,7 @@
 
 		<div class="page-header text-center">
 			<h1><span class="fa fa-clock-o"></span> Weekly Timesheet</h1>
+			<a href="/logout" class="btn btn-default btn-sm">Logout</a>
 
 
 
@@ -33,6 +38,7 @@
 			<div class="form-group" style="margin:100">
 				<label for="sel1">Select User:</label></br></br>
 				<select class="form-control" id="sel1" name="user" placeholder="User">
+					<!-- Display names if the varaibel is defined -->
 					<%  if(typeof result !="undefined"){ result.forEach(function(data) { %>
 					 <option><%= data.FirstName %>   <%= data.LastName %>  <%= data.User_ID %>  </option>
 					 <% }); }%>
@@ -53,6 +59,7 @@
 
 
 		</div>
+		<!-- table and new entry module are in a different ejs -->
 		<% include table %>
 		</body>
 		</html>

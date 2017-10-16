@@ -8,6 +8,7 @@
 	<style>
 		body 		{ padding-top:80px; word-wrap:break-word; }
 	</style>
+	<!-- This includes the header image -->
 	<% include head %>
 </head>
 <body>
@@ -15,6 +16,7 @@
 
 	<div class="page-header text-center">
 		<h1><span class="fa fa-clock-o"></span> Weekly Timesheet</h1>
+		<a href="/logout" class="btn btn-default btn-sm">Logout</a>
 
 
 
@@ -28,6 +30,7 @@
 		<div class="form-group" style="margin:100">
 			<label for="sel1">Select User:</label></br></br>
 			<select class="form-control" id="sel1" name="user" placeholder="User">
+				<!-- This populates the list of options with the user names lastname and id -->
 				<%  if(typeof result !="undefined"){ result.forEach(function(data) { %>
 				 <option><%= data.FirstName %>   <%= data.LastName %>  <%= data.User_ID %>  </option>
 				 <% }); }%>
@@ -48,6 +51,7 @@
 
 
 	</div>
+	<!-- The rest of the page is in a different ejs this includes the table and the new entry form -->
 	<% include table %>
 </body>
 </html>
