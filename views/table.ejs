@@ -7,6 +7,7 @@
 .bluer_bg{ background-color:#14a2d2; }
 .head{ background-color: #14a2d2; webkit-print-color-adjust: exact;}
 .foot{ background-color: #0f7ea3; color:white; font-weight: bold;webkit-print-color-adjust: exact;}
+.footd{ background-color: #0a7ea3; color:white; font-weight: bold;webkit-print-color-adjust: exact;}
 .new{position: fixed; bottom: 2;}
 .label{display:block;}
 body{
@@ -149,6 +150,8 @@ table, th, td {
 
          <% } }
          else{
+
+           var dayA=[0,0,0,0,0,0,0];
            for(var i=0;i<7;i++){%>
              <tr>
                <td class="blue_bg" colspan="4" ><b><%- daysInWeek[i] -%></b></td>
@@ -165,8 +168,9 @@ table, th, td {
 
 
                  console.log("Data Total: "+data.Total);
-
+                 dayA[i]=dayA[i]+data.Total;
                  data.Total = minutes2H(data.Total);
+
 
                  console.log("After minutes to hours: "+data.Total);
 
@@ -186,6 +190,12 @@ table, th, td {
                 </tr>
 
             <% }})%>
+            <
+              <tr class="footd" >
+                <!-- calculation for the total houes for query -->
+                <td colspan="3" align="right"><b>TOTAL DAY HOURS : <b></td><td><%- minutes2H(dayA[i]) -%></td>
+                <tr>
+
 
            <%}  } %>
            <tfoot>
