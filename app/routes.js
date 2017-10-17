@@ -16,6 +16,15 @@ con.query('USE '+ dbconfig.database);
 	// HOME PAGE (with login links) ========
 	// =====================================
 	app.get('/',  function(req, res) {
+
+		//Date magic
+		var time = new Date("October 13, 2017 01:00:00");
+
+
+
+		console.log("Crated artificial time: "+time.toTimeString());
+		time.addHours(5);
+		console.log("Crated artificial added time: "+time.toTimeString());
 //Get names funciton gets users from users table and passes it to the ejs form
 		getNames(con,function(err,resu){
 			if(err) console.log(err);
@@ -103,7 +112,10 @@ con.query('USE '+ dbconfig.database);
 			var id = req.body.ID.split(",");
 		console.log("We got the Id "+ id[2]);
 		//This function inserts a new entry to the database
-		insertNew(con,id[2],req.body.date,req.body.project,req.body.description,req.body.timeI,req.body.timeO,function(err,result){
+
+		var project = req.body.project.split(" ");
+		console.log("Project input: "+ project[0]);
+		insertNew(con,id[2],req.body.date,project[0],req.body.description,req.body.timeI,req.body.timeO,function(err,result){
 			if(err) {
 				console.log(err);
 				//Still need to get names to reload landing page with names
@@ -271,4 +283,10 @@ function isLoggedIn(req, res, next) {
 
 	// if they aren't redirect them to the home page
 	res.redirect('/signup');
+}
+// number of hours per day calculator
+
+Date.prototype.addHours= function(h){
+    this.setHours(this.getHours()+h);
+    return this;
 }

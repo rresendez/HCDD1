@@ -207,7 +207,7 @@ table, th, td {
          <input type="date" class="form-control" id="date" name="date" placeholder="yyyy-mm-dd" title="Date">
          <select name="project" placeholder="Project number" class="form-control" >
          <% projI.forEach(function(data){ %>
-           <option> <%- data.Proj_id -%> <%- data.ProjOfficial -%><%- data.ProjNo -%> <%- data.Owner -%><%- data.Pct -%> </option>
+           <option> <%- data.ProjNo -%> <%- data.Proj_id -%> <%- data.ProjOfficial -%> <%- data.Owner -%><%- data.Pct -%> </option>
 
         <% });%>
         <input type="text" name="description" placeholder="Project description" class="form-control" >

@@ -45,7 +45,7 @@
 						console.log("We found a match!");%>
 						<option selected="selected"><%= data.FirstName %>   <%= data.LastName %>  <%= data.User_ID %>  </option>
 				<%	} } %>
-					<% if(user[2]!=data.User_ID){ %><option><%= data.FirstName %>   <%= data.LastName %>  <%= data.User_ID %>  </option>
+					<% if(typeof user =="undefined"||user[2]!=data.User_ID){ %><option><%= data.FirstName %>   <%= data.LastName %>  <%= data.User_ID %>  </option>
 						<%}%>
 					 <% }); }%>
 				 </select>
