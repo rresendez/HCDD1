@@ -16,15 +16,6 @@ con.query('USE '+ dbconfig.database);
 	// HOME PAGE (with login links) ========
 	// =====================================
 	app.get('/',  function(req, res) {
-
-		//Date magic
-		var time = new Date("October 13, 2017 01:00:00");
-
-
-
-		console.log("Crated artificial time: "+time.toTimeString());
-		time.addHours(5);
-		console.log("Crated artificial added time: "+time.toTimeString());
 //Get names funciton gets users from users table and passes it to the ejs form
 		getNames(con,function(err,resu){
 			if(err) console.log(err);
@@ -106,6 +97,17 @@ con.query('USE '+ dbconfig.database);
 //This checks for new entrie creation if we have an user id deffined
 //This check for the creation of a new entry
 	else if (typeof req.body.ID !="undefined") {
+		//Date magic
+		const time = new Date("October 13, 2017 00:00:00");
+
+
+
+		console.log("Crated artificial time: "+time.toTimeString());
+		var timeO=new Date("October 13, 2017 00:00:00");
+		 
+		 timeO = timeO.addHours(req.body.time);
+		console.log("Crated artificial added time: "+timeO.toTimeString());
+
 		//This is going to split the name last name and id into an array
 
 
@@ -115,7 +117,7 @@ con.query('USE '+ dbconfig.database);
 
 		var project = req.body.project.split(" ");
 		console.log("Project input: "+ project[0]);
-		insertNew(con,id[2],req.body.date,project[0],req.body.description,req.body.timeI,req.body.timeO,function(err,result){
+		insertNew(con,id[2],req.body.date,project[0],req.body.description,time,timeO,function(err,result){
 			if(err) {
 				console.log(err);
 				//Still need to get names to reload landing page with names

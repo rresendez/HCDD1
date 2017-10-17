@@ -46,7 +46,7 @@ table, th, td {
 
        console.log("This is week from data: "+ data.week);
 
-       if(typeof weekN!= "undefined" && weekN==data.week){
+       if(typeof weekN!= "undefined" && weekN-1==data.week){
          console.log("This is week varaible: "+weekN);
          timeOW= data.Total+timeOW;
        }
@@ -211,8 +211,8 @@ table, th, td {
 
         <% });%>
         <input type="text" name="description" placeholder="Project description" class="form-control" >
-        <input style="width:10" type="time" placeholder="Time In" value="TimeI" name="timeI" class="form-control" id="timeI" title="Time in" />
-        <input style="width:10" type="time" placeholder="Time Out" value="TimeO"  name="timeO" class="form-control" id="timeO" title="Time out"/ ></br></br>
+        <input style="width:10" type="number" placeholder="Time In Hours" value="Time In Hours" name="time" class="form-control" id="timeI" title="Time in hours"  min="1" max="23"  />
+
 
           <button style="float:right; margin-right:1.5em" type="submit" class="btn btn-info">Create </button>
 
