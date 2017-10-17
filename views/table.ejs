@@ -81,7 +81,9 @@ table, th, td {
       <tbody>
         <!-- This table is set up to generate 7 days a week for 5 iterations make a total o 5 weeks a month -->
        <%
-       if(typeof weekN=="undefined" ||  weekN.length<1) {
+       if(typeof weekN=="undefined" ||  weekN.length<1 ) {
+
+         if(typeof query !="undefined"){
 
 
        for(var i=0; count < 5; i++ )
@@ -145,7 +147,7 @@ table, th, td {
             <tr>
             </tfoot>
 
-         <% }
+         <% } }
          else{
            for(var i=0;i<7;i++){%>
              <tr>
@@ -202,12 +204,13 @@ table, th, td {
        <div class="container" id="new">
 
          <h2 align="center"><%- first -%>   <%- second -%> | <%- num -%> </h2></br>
-       <form action="/" method="post">
+       <form action="/timesheet/" method="post">
          <input hidden type="text" name="ID" value="<%- user -%>">
          <input type="date" class="form-control" id="date" name="date" placeholder="yyyy-mm-dd" title="Date">
          <select name="project" placeholder="Project number" class="form-control" >
+            <option value="" selected disabled hidden>Select Project</option>
          <% projI.forEach(function(data){ %>
-           <option> <%- data.ProjNo -%> <%- data.Proj_id -%> <%- data.ProjOfficial -%> <%- data.Owner -%><%- data.Pct -%> </option>
+           <option> <%- data.Proj_id -%> <%- data.ProjNo -%> <%- data.ProjOfficial -%> <%- data.Owner -%><%- data.Pct -%> </option>
 
         <% });%>
         <input type="text" name="description" placeholder="Project description" class="form-control" >

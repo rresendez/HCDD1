@@ -15,7 +15,7 @@ con.query('USE '+ dbconfig.database);
 	// =====================================
 	// HOME PAGE (with login links) ========
 	// =====================================
-	app.get('/',  function(req, res) {
+	app.get('/timesheet',  function(req, res) {
 //Get names funciton gets users from users table and passes it to the ejs form
 		getNames(con,function(err,resu){
 			if(err) console.log(err);
@@ -29,7 +29,7 @@ con.query('USE '+ dbconfig.database);
 	});
 	// Home page post section
 
-	app.post('/',  function(req, res){
+	app.post('/timesheet',  function(req, res){
 		//Get posted information
 		console.log(req.body.user);
 		//Bunch of informaiton on the project
@@ -85,8 +85,11 @@ con.query('USE '+ dbconfig.database);
 					getNames(con,function(err,resu){
 						if(err) console.log(err);
 						else{
+							getPInfo(con,function(err2,proj){
+								if(err2) { console.log(err2);}
 							//render land ejs passing result of query user name and bunch of other things!
-							res.render('land.ejs',{ result : resu, query : result, user: name, weekN: req.body.week});
+							res.render('land.ejs',{ result : resu, query : result, user: name, weekN: req.body.week, projI:proj});
+						})
 						}
 					});
 				}
@@ -104,7 +107,7 @@ con.query('USE '+ dbconfig.database);
 
 		console.log("Crated artificial time: "+time.toTimeString());
 		var timeO=new Date("October 13, 2017 00:00:00");
-		 
+
 		 timeO = timeO.addHours(req.body.time);
 		console.log("Crated artificial added time: "+timeO.toTimeString());
 
@@ -172,7 +175,7 @@ con.query('USE '+ dbconfig.database);
 
 	// process the login form
 	app.post('/login', passport.authenticate('local-login', {
-            successRedirect : '/', // redirect to the secure profile section
+            successRedirect : '/timesheet', // redirect to the secure profile section
             failureRedirect : '/login', // redirect back to the signup page if there is an error
             failureFlash : true // allow flash messages
 		}),
@@ -184,7 +187,7 @@ con.query('USE '+ dbconfig.database);
             } else {
               req.session.cookie.expires = false;
             }
-        res.redirect('/');
+        res.redirect('/timesheet');
     });
 
 	// =====================================
@@ -198,7 +201,7 @@ con.query('USE '+ dbconfig.database);
 
 	// process the signup form
 	app.post('/signup', passport.authenticate('local-signup', {
-		successRedirect : '/', // redirect to the secure profile section
+		successRedirect : '/timesheet', // redirect to the secure profile section
 		failureRedirect : '/signup', // redirect back to the signup page if there is an error
 		failureFlash : true // allow flash messages
 	}));
@@ -219,7 +222,7 @@ con.query('USE '+ dbconfig.database);
 	// =====================================
 	app.get('/logout', function(req, res) {
 		req.logout();
-		res.redirect('/');
+		res.redirect('/timesheet');
 	});
 };
 // Funciton get name
