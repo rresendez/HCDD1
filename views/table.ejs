@@ -190,10 +190,10 @@ table, th, td {
                 </tr>
 
             <% }})%>
-            <
+            
               <tr class="footd" >
                 <!-- calculation for the total houes for query -->
-                <td colspan="3" align="right"><b>TOTAL DAY HOURS : <b></td><td><%- minutes2H(dayA[i]) -%></td>
+                <td colspan="3" align="right"><b> <%- daysInWeek[i] -%> Hours : <b></td><td><%- minutes2H(dayA[i]) -%></td>
                 <tr>
 
 
@@ -216,7 +216,9 @@ table, th, td {
          <h2 align="center"><%- first -%>   <%- second -%> | <%- num -%> </h2></br>
        <form action="/timesheet/" method="post">
          <input hidden type="text" name="ID" value="<%- user -%>">
+
          <input type="date" class="form-control" id="date" name="date" placeholder="yyyy-mm-dd" title="Date">
+
          <select name="project" placeholder="Project number" class="form-control" >
             <option value="" selected disabled hidden>Select Project</option>
          <% projI.forEach(function(data){ %>

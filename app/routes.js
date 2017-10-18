@@ -60,7 +60,7 @@ con.query('USE '+ dbconfig.database);
 						//render land ejs passing result of query user name and bunch of other things!
 						if(err2)console.log(err2);
 						else{
-						res.render('land.ejs',{ result : resu, query : result, user: name, weekN: weekNum, projI: proj });
+						res.render('land.ejs',{ result : resu, query : result, user: name, dateF: req.body.date, weekN: weekNum, projI: proj, weekF: req.body.week });
 						}})
 					}
 				});
@@ -88,7 +88,7 @@ con.query('USE '+ dbconfig.database);
 							getPInfo(con,function(err2,proj){
 								if(err2) { console.log(err2);}
 							//render land ejs passing result of query user name and bunch of other things!
-							res.render('land.ejs',{ result : resu, query : result, user: name, weekN: req.body.week, projI:proj});
+							res.render('land.ejs',{ result : resu, query : result, user: name, weekN: req.body.week, projI:proj, dateF: req.body.date, pidF: req.body.pid, weekF: req.body.week});
 						})
 						}
 					});
@@ -141,7 +141,7 @@ con.query('USE '+ dbconfig.database);
 					if(err) console.log(err);
 					else{
 						//console.log(resu[0]);
-						res.render('land2.ejs',{ result : resu, status : true});
+						res.render('land2.ejs',{ result : resu, status : true, dateF : req.body.date});
 					}
 				});
 			}

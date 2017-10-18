@@ -44,12 +44,23 @@
 			 </select>
 		 </br><br><br>
 			 <label for="date">Select Month and Year:    </label><br></br>
+			 <% if (typeof dateF == "undefined"){ %>
 			 <input type="month" class="form-control" id="date" name="date" placeholder="yyyy-mm">
+			 <% }else{ %>
+			 <input type="month" class="form-control" id="date" name="date" placeholder="yyyy-mm" value="<%- dateF -%>">
+			 <% } %>
 
 
-
+			 <% if (typeof pidF == "undefined"){ %>
 		 <input  style="width:50%" type="text" class="form-control"  name="pid" placeholder="Project number (Optional)">
+		 <% }else{ %>
+			<input  style="width:50%" type="text" class="form-control" value="<%- pidF -%>" name="pid" placeholder="Project number (Optional)">
+			<% } %>
+			<% if (typeof weekF == "undefined"){ %>
 		  <input  style="width:50%" type="number" class="form-control"  name="week" placeholder="Week 1-5 (Optional)" min="1" max="5">
+			<% }else{ %>
+				<input  style="width:50%" type="number" class="form-control"  name="week" placeholder="Week 1-5 (Optional)" min="1" max="5" value="<%- weekF -%>">
+				<% } %>
 	 </br>
 
 
