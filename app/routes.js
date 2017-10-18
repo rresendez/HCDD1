@@ -36,7 +36,10 @@ con.query('USE '+ dbconfig.database);
 		console.log("Project Id: "+req.body.pid);
 		console.log("Type of Project Id: "+ typeof(req.body.pid));
 		//Check for input of user but no project id
-		if((typeof req.body.user != "undefined" ) && req.body.pid.length<1  ){
+		if(typeof req.body.pid =="undefined"){
+			req.body.pid="";
+		}
+		if((typeof req.body.user != "undefined" ) && req.body.pid.length<1 && typeof req.body.ID =="undefined" ){
 	// Divides name and user number in a 3 index array
 		var name = req.body.user.split(" ");
 	// Set time range for one month
@@ -67,7 +70,7 @@ con.query('USE '+ dbconfig.database);
 			}
 		})
 		//If process Id is defined then make search using process id
-	} else if(typeof req.body.pid != "undefined"){
+	} else if(typeof req.body.pid != "undefined"  && typeof req.body.ID =="undefined"){
 		// Divides name and user number in a 3 index array
 			var name = req.body.user.split(" ");
 
@@ -136,14 +139,76 @@ con.query('USE '+ dbconfig.database);
 			}
 			//Default status where nothing was input just load land2.ejs with names
 			else{
-				console.log(result);
-				getNames(con,function(err,resu){
+				console.log("body user: "+req.body.user);
+
+				if((typeof req.body.user != "undefined" ) && req.body.pid.length<1  ){
+			// Divides name and user number in a 3 index array
+				var name = req.body.user.split(",");
+				console.log("Body user index 2: "+ name[2]);
+			// Set time range for one month
+			var date2 = req.body.date;
+			req.body.date=req.body.date.slice(0,7);
+			console.log("Body date: "+req.body.date);
+				var dateB = req.body.date+"-01";
+				var dateE = req.body.date+"-31";
+				// Get date of the week
+				var weekNum = req.body.week;
+				console.log("Week number: "+weekNum);
+				//Get ID from user name
+
+				getProject(con,name[2],dateB,dateE,function(err,result){
 					if(err) console.log(err);
 					else{
-						//console.log(resu[0]);
-						res.render('land2.ejs',{ result : resu, status : true, dateF : req.body.date});
+						console.log(result);
+						console.log("Project number: "+ req.body.pid);
+				// We still need the names to pass to the land.ejs page to display drop down menu
+						getNames(con,function(err1,resu){
+							if(err1) console.log(err1);
+							else{
+								getPInfo(con,function(err2,proj){
+								//render land ejs passing result of query user name and bunch of other things!
+								if(err2)console.log(err2);
+								else{
+								res.render('land.ejs',{ result : resu, query : result, user: name, dateF: req.body.datePer, weekN: weekNum, projI: proj, weekF: req.body.week,date2F: date2 });
+								}})
+							}
+						});
 					}
-				});
+				})
+				//If process Id is defined then make search using process id
+			}else if(typeof req.body.pid != "undefined" || req.body.pid.length>1){
+				console.log("Project id defined");
+				// Divides name and user number in a 3 index array
+					var name = req.body.user.split(",");
+
+				// Set time range for one month
+					var date2 = req.body.date;
+				  req.body.date=req.body.date.slice(0,7);
+					var dateB = req.body.date+"-01";
+					var dateE = req.body.date+"-31";
+					//Get ID from user name
+					//Same funaction as get project but this one uses also project id to find projects
+					getProjectID(con,name[2],dateB,dateE,req.body.pid,function(err,result){
+						if(err) console.log(err);
+						else{
+							console.log(result);
+							console.log("Project number: "+ req.body.pid);
+					// We still need the names to pass to the land.ejs page to display drop down menu
+							getNames(con,function(err,resu){
+								if(err) console.log(err);
+								else{
+									getPInfo(con,function(err2,proj){
+										if(err2) { console.log(err2);}
+									//render land ejs passing result of query user name and bunch of other things!
+									res.render('land.ejs',{ result : resu, query : result, user: name, weekN: req.body.week, projI:proj, dateF: req.body.date, pidF: req.body.pid, weekF: req.body.week,date2F: date2});
+								})
+								}
+							});
+						}
+					})
+
+
+			}
 			}
 
 		})

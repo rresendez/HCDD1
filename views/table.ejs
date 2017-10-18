@@ -3,11 +3,11 @@
 <head>
   <!-- All of this is style for this particular file -->
 <style type="text/css">
-.blue_bg{ background-color:#5ccbf0; }
+.blue_bg{ background-color:#5ccbf0;  color:#0b5a75; }
 .bluer_bg{ background-color:#14a2d2; }
-.head{ background-color: #14a2d2; webkit-print-color-adjust: exact;}
-.foot{ background-color: #0f7ea3; color:white; font-weight: bold;webkit-print-color-adjust: exact;}
-.footd{ background-color: #0a7ea3; color:white; font-weight: bold;webkit-print-color-adjust: exact;}
+.head{ background-color: #0d6c8c; webkit-print-color-adjust: exact; color:white; font-weight: bold;}
+.foot{ background-color: #0d6c8c; color:white; font-weight: bold;webkit-print-color-adjust: exact;}
+.footd{ background-color: #0f7ea3; color:white;  webkit-print-color-adjust: exact;}
 .new{position: fixed; bottom: 2;}
 .label{display:block;}
 body{
@@ -92,7 +92,7 @@ table, th, td {
           %>
 
           <% if(i<7){ %>
-        <tr>
+        <tr  >
           <td class="blue_bg" colspan="4" ><b><%- daysInWeek[i] -%></b></td>
         </tr>
         <% } %>
@@ -190,7 +190,7 @@ table, th, td {
                 </tr>
 
             <% }})%>
-            
+
               <tr class="footd" >
                 <!-- calculation for the total houes for query -->
                 <td colspan="3" align="right"><b> <%- daysInWeek[i] -%> Hours : <b></td><td><%- minutes2H(dayA[i]) -%></td>
@@ -216,8 +216,19 @@ table, th, td {
          <h2 align="center"><%- first -%>   <%- second -%> | <%- num -%> </h2></br>
        <form action="/timesheet/" method="post">
          <input hidden type="text" name="ID" value="<%- user -%>">
-
+         <input hidden type="text" name="user" value="<%- user -%>">
+         <input hidden type="month" name="datePer" value="<%- dateF -%>">
+         <% if(typeof pidF !="undefined") { %>
+         <input hidden type="text" name="pid" value="<%- pidF -%>">
+         <% } %>
+         <% if(typeof weekN !="undefined") { %>
+         <input hidden type="text" name="week" value="<%- weekN -%>">
+         <% } %>
+         <% if(typeof date2F =="undefined") { %>
          <input type="date" class="form-control" id="date" name="date" placeholder="yyyy-mm-dd" title="Date">
+         <% } else{%>
+           <input type="date" class="form-control" id="date" name="date" placeholder="yyyy-mm-dd" title="Date" value="<%- date2F -%>">
+           <%}%>
 
          <select name="project" placeholder="Project number" class="form-control" >
             <option value="" selected disabled hidden>Select Project</option>
