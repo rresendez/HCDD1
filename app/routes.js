@@ -9,7 +9,7 @@ var dbconfig = require('../config/database_2');
 //Date formating thing
 
 //Create conection with current db configuration
-var con = mysql.createConnection(dbconfig.connection);
+var con = mysql.createPool(dbconfig.connection);
 // Make sure to use the correct database
 con.query('USE '+ dbconfig.database);
 	// =====================================
@@ -26,10 +26,15 @@ con.query('USE '+ dbconfig.database);
 		});
 
 		 // load the index.ejs file
+
 	});
 	// Home page post section
 
 	app.post('/timesheet',  function(req, res){
+		//DB connection
+		var con = mysql.createConnection(dbconfig.connection);
+		// Make sure to use the correct database
+		con.query('USE '+ dbconfig.database);
 		//Get posted information
 		console.log(req.body.user);
 		//Bunch of informaiton on the project
@@ -64,6 +69,8 @@ con.query('USE '+ dbconfig.database);
 						if(err2)console.log(err2);
 						else{
 						res.render('land.ejs',{ result : resu, query : result, user: name, dateF: req.body.date, weekN: weekNum, projI: proj, weekF: req.body.week });
+						con.end(); console.log("end");
+
 						}})
 					}
 				});
@@ -92,6 +99,8 @@ con.query('USE '+ dbconfig.database);
 								if(err2) { console.log(err2);}
 							//render land ejs passing result of query user name and bunch of other things!
 							res.render('land.ejs',{ result : resu, query : result, user: name, weekN: req.body.week, projI:proj, dateF: req.body.date, pidF: req.body.pid, weekF: req.body.week});
+							con.end(); console.log("end");
+
 						})
 						}
 					});
@@ -132,6 +141,8 @@ con.query('USE '+ dbconfig.database);
 					else{
 						//console.log(resu[0]);
 						res.render('land2.ejs',{ result : resu, status : false});
+						con.end(); console.log("end");
+
 					}
 				});
 
@@ -170,6 +181,8 @@ con.query('USE '+ dbconfig.database);
 								if(err2)console.log(err2);
 								else{
 								res.render('land.ejs',{ result : resu, query : result, user: name, dateF: req.body.datePer, weekN: weekNum, projI: proj, weekF: req.body.week,date2F: date2 });
+								con.end(); console.log("end");
+
 								}})
 							}
 						});
@@ -201,6 +214,7 @@ con.query('USE '+ dbconfig.database);
 										if(err2) { console.log(err2);}
 									//render land ejs passing result of query user name and bunch of other things!
 									res.render('land.ejs',{ result : resu, query : result, user: name, weekN: req.body.week, projI:proj, dateF: req.body.date, pidF: req.body.pid, weekF: req.body.week,date2F: date2});
+									con.end(); console.log("end");
 								})
 								}
 							});
@@ -218,8 +232,11 @@ con.query('USE '+ dbconfig.database);
 
 	else{
 		res.render('land.ejs');
-	}
+		con.end(); console.log("end");
 
+	}
+	//Close connection
+// Handle Disconnect
 
 
 	});
@@ -299,6 +316,7 @@ function getNames(con,callback){
 		}
 
 	})
+
 }
 
 //function to get prject info and calculate time
@@ -354,6 +372,30 @@ function isLoggedIn(req, res, next) {
 	// if they aren't redirect them to the home page
 	res.redirect('/signup');
 }
+// Function handleDisconnect
+
+function handleDisconnect(db_config) {
+	var mysql = require('mysql');
+  connection = mysql.createConnection(db_config); // Recreate the connection, since
+                                                  // the old one cannot be reused.
+
+  connection.connect(function(err) {              // The server is either down
+    if(err) {                                     // or restarting (takes a while sometimes).
+      console.log('error when connecting to db:', err);
+      setTimeout(handleDisconnect, 2000); // We introduce a delay before attempting to reconnect,
+    }                                     // to avoid a hot loop, and to allow our node script to
+  });                                     // process asynchronous requests in the meantime.
+                                          // If you're also serving http, display a 503 error.
+  connection.on('error', function(err) {
+    console.log('db error', err);
+    if(err.code === 'PROTOCOL_CONNECTION_LOST') { // Connection to the MySQL server is usually
+      handleDisconnect();                         // lost due to either server restart, or a
+    } else {                                      // connnection idle timeout (the wait_timeout
+      console.log (err);                                  // server variable configures this)
+    }
+  });
+}
+
 // number of hours per day calculator
 
 Date.prototype.addHours= function(h){
