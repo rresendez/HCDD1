@@ -7,6 +7,8 @@ var session  = require('express-session');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
+var busboy = require("then-busboy");
+var fileUpload = require('express-fileupload');
 var app      = express();
 var port     = process.env.PORT || 8081;
 
@@ -41,6 +43,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
+app.use(fileUpload());
 
 
 // routes ======================================================================
