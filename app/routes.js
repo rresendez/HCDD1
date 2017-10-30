@@ -14,14 +14,39 @@ var con = mysql.createPool(dbconfig.connection);
 // Make sure to use the correct database
 con.query('USE '+ dbconfig.database);
 //New crazy routes yo
+app.get('/project', function (req,res){
+	var sql = "SELECT * FROM users_image ORDER BY id DESC";
+	con.query(sql, function (err,result){
+		if(err) console.log(err);
+		else{
+			console.log(result);
+			res.render('project',{data:result});
+
+		}
+	})
+
+})
+
+app.post('/project', function (req,res){
+	console.log(req.body.query);
+	queryImg(con,req.body.query,function(err,result){
+		if(err) console.log(err);
+		else{
+			console.log(result);
+			res.render('project',{data:result});
+		}
+	})
+
+
+})
 
 // Get time
-app.get('/time', function(req,res){
+app.get('/upload', function(req,res){
 	res.render('img.ejs');
 });
 
 // Post time
-app.post('/time', function(req,res){
+app.post('/upload', function(req,res){
 	message = '';
 	if(req.method == "POST"){
 		 var post  = req.body;
@@ -39,12 +64,12 @@ app.post('/time', function(req,res){
 
 			if(file.mimetype == "image/jpeg" ||file.mimetype == "image/png"||file.mimetype == "image/gif" ){
 
-						 file.mv('./public/images/upload_images/'+file.name, function(err) {
+						 file.mv('./img/public/images/upload_images/'+file.name, function(err) {
 
 							 if (err)
 
 								 return res.status(500).send(err);
-							 var sql = "INSERT INTO `users_image`(`first_name`,`last_name`,`mob_no`,`user_name`, `password` ,`image`) VALUES ('" + fname + "','" + lname + "','" + mob + "','" + name + "','" + pass + "','" + img_name + "')";
+							 var sql = "INSERT INTO `users_image`(`first_name`,`last_name` ,`image`) VALUES ('" + fname + "','" + lname + "','" + img_name + "')";
 
 							 var query = con.query(sql, function(err, result) {
 								 if(err) console.log(err);
@@ -458,6 +483,19 @@ function handleDisconnect(db_config) {
       console.log (err);                                  // server variable configures this)
     }
   });
+}
+//Function query images
+function queryImg(con,query,callback){
+	query="%"+query+"%";
+	con.query("SELECT * from users_image WHERE image LIKE ?",[query],function(err,res){
+		if(err){
+			callback(err,null);
+		}
+		else{
+			callback(null,res);
+
+		}
+	})
 }
 
 // number of hours per day calculator

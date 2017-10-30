@@ -16,6 +16,7 @@
     <!-- Custom styles for this template -->
     <link href="/static/css/portfolio-item.css" rel="stylesheet">
 
+
   </head>
 
   <body>
@@ -35,7 +36,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">About</a>
+              <a class="nav-link" href="/upload">Upload</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">Services</a>
@@ -55,13 +56,32 @@
       <h1 class="my-4">Page Heading
         <small>Secondary Text</small>
       </h1>
+      <div class="container">
+  	<div class="row">
+
+  		<h2>Stylish Search Box</h2>
+      <div class="container">
+<div id="quick-access">
+<form class="form-inline quick-search-form" role="form" action="/project" method="post">
+ <div class="form-group">
+     <input type="text" class="form-control" placeholder="Search here" name="query">&nbsp;&nbsp;
+ </div>
+ <button type="submit" id="quick-search" class="btn btn-success">Search</button></br></br></br>
+</form>
+</div>
+</div>
+  	</div>
+  </div>
+
 
       <!-- Portfolio Item Row -->
       <div class="row">
-
+        <% if(data.length>0){ %>
         <div class="col-md-8">
-          <img class="img-fluid" src="http://placehold.it/750x500" alt="">
+          <img class="img-fluid" src="/static/public/images/upload_images/<%=data[0].image%>" href="/static/public/images/upload_images/<%=data[0].image%>">
+          <figcaption>Image name: <%=data[0].image%></figcaption>
         </div>
+        <% } %>
 
         <div class="col-md-4">
           <h3 class="my-3">Project Description</h3>
@@ -83,29 +103,24 @@
 
       <div class="row">
 
+        <% if(data.length>0){
+        if(data.length <= 5){
+        for (var i=1; i< data.length; i++){ %>
         <div class="col-md-3 col-sm-6 mb-4">
-          <a href="#">
-            <img class="img-fluid" src="http://placehold.it/500x300" alt="">
+          <a href="/static/public/images/upload_images/<%=data[i].image%>">
+            <img class="img-fluid" src="/static/public/images/upload_images/<%=data[i].image%>" alt="">
           </a>
+          <figcaption>Image name: <%=data[i].image%></figcaption>
         </div>
-
-        <div class="col-md-3 col-sm-6 mb-4">
-          <a href="#">
-            <img class="img-fluid" src="http://placehold.it/500x300" alt="">
-          </a>
-        </div>
-
-        <div class="col-md-3 col-sm-6 mb-4">
-          <a href="#">
-            <img class="img-fluid" src="http://placehold.it/500x300" alt="">
-          </a>
-        </div>
-
-        <div class="col-md-3 col-sm-6 mb-4">
-          <a href="#">
-            <img class="img-fluid" src="http://placehold.it/500x300" alt="">
-          </a>
-        </div>
+        <% }} else{
+        for (var i=1; i< 5; i++){ %>
+          <div class="col-md-3 col-sm-6 mb-4">
+            <a href="/static/public/images/upload_images/<%=data[i].image%>">
+              <img class="img-fluid" src="/static/public/images/upload_images/<%=data[i].image%>" alt="">
+            </a>
+            <figcaption>Image name: <%=data[i].image%></figcaption>
+          </div>
+        <%} } } %>
 
       </div>
       <!-- /.row -->
