@@ -55,6 +55,7 @@ app.post('/upload', function(req,res){
 		 var fname= post.first_name;
 		 var lname= post.last_name;
 		 var mob= post.mob_no;
+		 var description = post.description;
 
 	 if (!req.files)
 			 return res.status(400).send('No files were uploaded.');
@@ -69,7 +70,7 @@ app.post('/upload', function(req,res){
 							 if (err)
 
 								 return res.status(500).send(err);
-							 var sql = "INSERT INTO `users_image`(`first_name`,`last_name` ,`image`) VALUES ('" + fname + "','" + lname + "','" + img_name + "')";
+							 var sql = "INSERT INTO `users_image`(`first_name`,`last_name` ,`image`,`description`) VALUES ('" + fname + "','" + lname + "','" + img_name + "','" + description + "')";
 
 							 var query = con.query(sql, function(err, result) {
 								 if(err) console.log(err);
@@ -487,7 +488,7 @@ function handleDisconnect(db_config) {
 //Function query images
 function queryImg(con,query,callback){
 	query="%"+query+"%";
-	con.query("SELECT * from users_image WHERE image LIKE ?",[query],function(err,res){
+	con.query("SELECT * from users_image WHERE image LIKE ? OR description LIKE ?",[query,query],function(err,res){
 		if(err){
 			callback(err,null);
 		}

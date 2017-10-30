@@ -14,9 +14,18 @@
              <div >
                <div  align="center"> <img alt="User Pic" src="/static/public/images/upload_images/<%=data[0].image%>" class="img-responsive"> </div>
                <figcaption>Image name: <%=data[0].image%></figcaption>
+               <br>
                <div >
                  <table class="table table-user-information">
                    <tbody>
+                     <th>Description</th>
+                     <tr>
+                       <td>
+                         <%= data[0].description %>
+
+                       </td>
+                       </tr>
+
 
                    </tbody>
                  </table>

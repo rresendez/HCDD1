@@ -38,12 +38,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/upload">Upload</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Services</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Contact</a>
-            </li>
+
           </ul>
         </div>
       </div>
@@ -85,7 +80,13 @@
 
         <div class="col-md-4">
           <h3 class="my-3">Project Description</h3>
+          <%
+
+          if(typeof data[0] !='undefined'&& data[0].description!=null && data[0].description.length>1){ %>
+            <p> <%=data[0].description%><p>
+              <% }else{ %>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae. Sed dui lorem, adipiscing in adipiscing et, interdum nec metus. Mauris ultricies, justo eu convallis placerat, felis enim.</p>
+          <% } %>
           <h3 class="my-3">Project Details</h3>
           <ul>
             <li>Lorem Ipsum</li>
