@@ -5,8 +5,10 @@
                        <div class="panel-title">Upload Image</div>
                    </div>
                    <div class="panel-body" >
+                     <!-- This is the head which get the icon but also contains styling sheets -->
                      <% include head %>
                        <form class="form-group" role="form" method="post" action="/upload" enctype="multipart/form-data">
+                         <!-- IF there is a message , print it -->
                            <% if (typeof message != 'undefined' && message.length > 0) { %>
                                <div class="alert alert-success col-sm-12"><%= message %></div>
                            <% } %>
@@ -27,11 +29,18 @@
                                </div>
                            </div>
                            <div class="form-group">
-                               <label for="Description" class="col-md-3 control-label">Description</label>
+                               <label for="ID" class="col-md-3 control-label">Project ID</label>
                                <div class="col-md-9">
-                                   <textarea type="text" class="form-control" name="description" placeholder="description"></textarea>
+                                   <input type="text" class="form-control" name="pid" placeholder="Project ID"></input>
                                </div>
                            </div>
+                           <div class="form-group">
+                               <label for="Description" class="col-md-3 control-label">Description</label>
+                               <div class="col-md-9">
+                                   <textarea type="text" class="form-control" name="description" placeholder="Description"></textarea>
+                               </div>
+                           </div>
+
 
                            <div class="form-group">
                                <label for="mob_no" class="col-md-3 control-label">Profile Image</label>

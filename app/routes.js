@@ -13,8 +13,9 @@ var dbconfig = require('../config/database_2');
 var con = mysql.createPool(dbconfig.connection);
 // Make sure to use the correct database
 con.query('USE '+ dbconfig.database);
-//New crazy routes yo
+//This is the get route it will display all projects bydesc id
 app.get('/project', function (req,res){
+	// Query is hardcoded given that is the only one of its kinds and doesnt take any arguments
 	var sql = "SELECT * FROM users_image ORDER BY id DESC";
 	con.query(sql, function (err,result){
 		if(err) console.log(err);
@@ -26,28 +27,48 @@ app.get('/project', function (req,res){
 	})
 
 })
-
+// Post route for project this is the route for when there is a wery string posted
 app.post('/project', function (req,res){
+	console.log(typeof req.body.pidF);
+
+	if(req.body.pidF &&req.body.pidF.length>0){
+		req.body.query=req.body.pidF;
+	}
+
 	console.log(req.body.query);
+	// queryImg is a funciton that resturns projects with picture name or description like 'query'
 	queryImg(con,req.body.query,function(err,result){
 		if(err) console.log(err);
 		else{
 			console.log(result);
-			res.render('project',{data:result});
+			if(typeof result[0]=='undefined'){
+				res.render('project',{data:result});
+			}else {
+			projectInf(con,result[0].Proj_id,function(err2,result2){
+				if(err2) console.log(err2);
+				else{
+					console.log(result2);
+			res.render('project',{data:result, data2:result2});
+		}
+
+	})};
 		}
 	})
 
 
 })
 
-// Get time
+// Get time is the form to upload the images
 app.get('/upload', function(req,res){
 	res.render('img.ejs');
 });
 
-// Post time
+// Post hanldes the uplad of the image and insetion to the database
 app.post('/upload', function(req,res){
 	message = '';
+	con.query('USE '+ dbconfig.database);
+
+	//This parses the body informationin to varaibles so we can insert new entry to database
 	if(req.method == "POST"){
 		 var post  = req.body;
 		 var name= post.user_name;
@@ -56,6 +77,7 @@ app.post('/upload', function(req,res){
 		 var lname= post.last_name;
 		 var mob= post.mob_no;
 		 var description = post.description;
+		 var pid = post.pid;
 
 	 if (!req.files)
 			 return res.status(400).send('No files were uploaded.');
@@ -64,17 +86,19 @@ app.post('/upload', function(req,res){
 	 var img_name=file.name;
 
 			if(file.mimetype == "image/jpeg" ||file.mimetype == "image/png"||file.mimetype == "image/gif" ){
-
+						//Location to store the image
 						 file.mv('./img/public/images/upload_images/'+file.name, function(err) {
 
 							 if (err)
 
 								 return res.status(500).send(err);
-							 var sql = "INSERT INTO `users_image`(`first_name`,`last_name` ,`image`,`description`) VALUES ('" + fname + "','" + lname + "','" + img_name + "','" + description + "')";
+								 //This query was modified to insert only firt name last name image and description
+							 var sql = "INSERT INTO `users_image`(`first_name`,`last_name` ,`image`,`Proj_id`,`description`) VALUES ('" + fname + "','" + lname + "','" + img_name + "','"  + pid + "','" + description + "')";
 
 							 var query = con.query(sql, function(err, result) {
 								 if(err) console.log(err);
 								 console.log(result);
+								 //Upon success redirect to the item page
 									res.redirect('profile/'+result.insertId);
 							 });
 						});
@@ -330,7 +354,7 @@ app.post('/upload', function(req,res){
 
 
 	});
-//We don really ue this route
+//We don really use this route
 	app.get('/index', function(req, res) {
 		res.render('index.ejs'); // load the index.ejs file
 	});
@@ -441,7 +465,7 @@ function getProjectID(con,id,dateB,dateE,pid,callback){
 		}
 	})
 }
-
+// function insert new creates new entry fo swt
 function insertNew(con,id,date,project,description,timeI,timeO,callback){
 	var dialog = require('dialog');
 	con.query("INSERT INTO hcdd1swt(User_ID,TimeDate,Proj_ID,PDesc,TimeIn,TimeOut) VALUES(?,?,?,?,?,?) ",[id,date,project,description,timeI,timeO],function(err,res){
@@ -487,14 +511,27 @@ function handleDisconnect(db_config) {
 }
 //Function query images
 function queryImg(con,query,callback){
+	//This ensures that the similiraty is partial and not total
 	query="%"+query+"%";
-	con.query("SELECT * from users_image WHERE image LIKE ? OR description LIKE ?",[query,query],function(err,res){
+	con.query("SELECT * from time.users_image WHERE image LIKE ? OR description LIKE ? OR Proj_id LIKE ?",[query,query,query],function(err,res){
 		if(err){
 			callback(err,null);
 		}
 		else{
 			callback(null,res);
 
+		}
+	})
+}
+// Function to get project information
+function projectInf(con,id,callback){
+
+	con.query("SELECT * from time.hcdd1prj WHERE Proj_id=?",[id],function(err,res){
+		if(err){
+			callback(err,null);
+		}
+		else{
+			callback(null,res);
 		}
 	})
 }

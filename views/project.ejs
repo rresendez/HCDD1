@@ -8,6 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
+
     <title>Portfolio Item - Start Bootstrap Template</title>
 
     <!-- Bootstrap core CSS -->
@@ -53,7 +54,7 @@
       </h1>
       <div class="container">
   	<div class="row">
-
+<!-- Search box form -->
   		<h2>Stylish Search Box</h2>
       <div class="container">
 <div id="quick-access">
@@ -67,33 +68,66 @@
 </div>
   	</div>
   </div>
+  <% if(typeof data2 != 'undefined' && data2[0].Proj_id){ %>
+    <table class="table table-bordered" width="100%" style="text-align:center"  >
+  <thead style="background-color:#339966">
+    <tr>
+      <th>Precint</th>
+      <th>Project</th>
+      <th>Engineer</th>
+      <th>Updated as of:</th>
+      <th>Project List No.</th>
+      <th>Project ID</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= data2[0].Pct %></td>
+      <td><%= data2[0].ProjOfficial %></td>
+      <td><%= data2[0].EngName %></td>
+      <td><%= data2[0].StartDate %></td>
+      <td><%= data2[0].ProjNo %></td>
+      <td><%= data2[0].Proj_id %></td>
+    </tr>
+  </tbody>
+</table>
+
+
+    <%}%>
 
 
       <!-- Portfolio Item Row -->
       <div class="row">
+        <!-- check if there is anything is the data varaible -->
         <% if(data.length>0){ %>
         <div class="col-md-8">
-          <img class="img-fluid" src="/static/public/images/upload_images/<%=data[0].image%>" href="/static/public/images/upload_images/<%=data[0].image%>">
-          <figcaption>Image name: <%=data[0].image%></figcaption>
+          <a href="/static/public/images/upload_images/<%=data[0].image%>"><img class="img-fluid" src="/static/public/images/upload_images/<%=data[0].image%>" > </a>
+
         </div>
         <% } %>
 
         <div class="col-md-4">
           <h3 class="my-3">Project Description</h3>
           <%
-
+<!-- This si quite a control statement first it checks that data exists then that the description is not null and then that the description is longer than 1 charcter then and only then will it print the description -->
           if(typeof data[0] !='undefined'&& data[0].description!=null && data[0].description.length>1){ %>
             <p> <%=data[0].description%><p>
+  <!--This would be the default state -->
               <% }else{ %>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae. Sed dui lorem, adipiscing in adipiscing et, interdum nec metus. Mauris ultricies, justo eu convallis placerat, felis enim.</p>
           <% } %>
           <h3 class="my-3">Project Details</h3>
+             <% if(typeof data2 !='undefined'&& data2[0].ProjDesc !=null && data2[0].ProjDesc.length>1){ %>
+              <ul><li> <%=data2[0].ProjDesc%></li></ul>
+             <% }else{ %>
+
           <ul>
             <li>Lorem Ipsum</li>
             <li>Dolor Sit Amet</li>
             <li>Consectetur</li>
             <li>Adipiscing Elit</li>
           </ul>
+            <% } %>
         </div>
 
       </div>
@@ -103,16 +137,24 @@
       <h3 class="my-4">Related Projects</h3>
 
       <div class="row">
-
+<!-- first we check if there is anything int he data varaible -->
         <% if(data.length>0){
+          <!-- if the query resulted in 5 or less items go ahead and print them all -->
         if(data.length <= 5){
         for (var i=1; i< data.length; i++){ %>
         <div class="col-md-3 col-sm-6 mb-4">
           <a href="/static/public/images/upload_images/<%=data[i].image%>">
             <img class="img-fluid" src="/static/public/images/upload_images/<%=data[i].image%>" alt="">
+
           </a>
-          <figcaption>Image name: <%=data[i].image%></figcaption>
+          <form action="/project" method="post">
+          <button style="margin-top:10px;" class="btn btn-success btn-sm" value="<%=data[i].Proj_id%>" name="pidF">Project ID: <%=data[i].Proj_id%></button>
+        </form>
+
         </div>
+
+
+        <!-- if the query is longer than 5 just print the fisrt 5 -->
         <% }} else{
         for (var i=1; i< 5; i++){ %>
           <div class="col-md-3 col-sm-6 mb-4">
