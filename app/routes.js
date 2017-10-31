@@ -16,7 +16,7 @@ con.query('USE '+ dbconfig.database);
 //This is the get route it will display all projects bydesc id
 app.get('/project', function (req,res){
 	// Query is hardcoded given that is the only one of its kinds and doesnt take any arguments
-	var sql = "SELECT * FROM users_image ORDER BY id DESC";
+	var sql = "SELECT * FROM users_image ORDER BY id ASC";
 	con.query(sql, function (err,result){
 		if(err) console.log(err);
 		else{
@@ -60,6 +60,7 @@ app.post('/project', function (req,res){
 
 // Get time is the form to upload the images
 app.get('/upload', function(req,res){
+	con.query('USE '+ dbconfig.database);
 	res.render('img.ejs');
 });
 
@@ -78,6 +79,9 @@ app.post('/upload', function(req,res){
 		 var mob= post.mob_no;
 		 var description = post.description;
 		 var pid = post.pid;
+		 if(pid.length<1){
+			 pid=0;
+		 }
 
 	 if (!req.files)
 			 return res.status(400).send('No files were uploaded.');
@@ -93,6 +97,7 @@ app.post('/upload', function(req,res){
 
 								 return res.status(500).send(err);
 								 //This query was modified to insert only firt name last name image and description
+
 							 var sql = "INSERT INTO `users_image`(`first_name`,`last_name` ,`image`,`Proj_id`,`description`) VALUES ('" + fname + "','" + lname + "','" + img_name + "','"  + pid + "','" + description + "')";
 
 							 var query = con.query(sql, function(err, result) {
@@ -512,8 +517,21 @@ function handleDisconnect(db_config) {
 //Function query images
 function queryImg(con,query,callback){
 	//This ensures that the similiraty is partial and not total
+	var queEx = query;
+	if(!isNaN(query)&& query.length>0){
+		con.query("SELECT * from time.users_image WHERE Proj_id=? ",[queEx],function(err,res){
+			if(err){
+				callback(err,null);
+			}
+			else{
+				callback(null,res);
+
+			}
+		})
+	}else{
 	query="%"+query+"%";
-	con.query("SELECT * from time.users_image WHERE image LIKE ? OR description LIKE ? OR Proj_id LIKE ?",[query,query,query],function(err,res){
+
+	con.query("SELECT * from time.users_image WHERE Proj_id=? OR description LIKE ? OR Proj_id LIKE ? ",[queEx,query,query],function(err,res){
 		if(err){
 			callback(err,null);
 		}
@@ -522,6 +540,7 @@ function queryImg(con,query,callback){
 
 		}
 	})
+}
 }
 // Function to get project information
 function projectInf(con,id,callback){

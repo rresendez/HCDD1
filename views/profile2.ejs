@@ -30,9 +30,12 @@
                    </tbody>
                  </table>
                </br></br>
-                  &nbsp;
-                 <button class="btn btn-info"  type='submit'> <a href="\upload">Go Back</a> </button>
-                 <button class="btn btn-info" style="float:right" type='submit'> <a href="\project">Do Search</a> </button>
+
+                  <form action="/project" method="POST">
+                 &nbsp;&nbsp;<button class="btn btn-info"  type='submit'> <a href="\upload">Go Back</a> </button>
+
+                 <button class="btn btn-info" style="float:right" type='submit' value="<%=data[0].Proj_id%>" name="pidF"> Do Search </button>
+               </form>
                </div>
              </div>
            </div>
