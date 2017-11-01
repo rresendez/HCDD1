@@ -79,6 +79,7 @@ app.post('/upload', function(req,res){
 		 var mob= post.mob_no;
 		 var description = post.description;
 		 var pid = post.pid;
+		 var department = post.department;
 		 if(pid.length<1){
 			 pid=0;
 		 }
@@ -98,7 +99,7 @@ app.post('/upload', function(req,res){
 								 return res.status(500).send(err);
 								 //This query was modified to insert only firt name last name image and description
 
-							 var sql = "INSERT INTO `users_image`(`first_name`,`last_name` ,`image`,`Proj_id`,`description`) VALUES ('" + fname + "','" + lname + "','" + img_name + "','"  + pid + "','" + description + "')";
+							 var sql = "INSERT INTO `users_image`(`first_name`,`last_name` ,`image`,`Proj_id`,`department`,`description`) VALUES ('" + fname + "','" + lname + "','" + img_name + "','"  + pid + "','"  + department + "','" + description + "')";
 
 							 var query = con.query(sql, function(err, result) {
 								 if(err) console.log(err);
@@ -531,7 +532,7 @@ function queryImg(con,query,callback){
 	}else{
 	query="%"+query+"%";
 
-	con.query("SELECT * from time.users_image WHERE Proj_id=? OR description LIKE ? OR Proj_id LIKE ? ",[queEx,query,query],function(err,res){
+	con.query("SELECT * from time.users_image WHERE Proj_id LIKE ? OR description LIKE ? OR Proj_id LIKE ? OR department LIKE ? ",[queEx,query,query,query],function(err,res){
 		if(err){
 			callback(err,null);
 		}
