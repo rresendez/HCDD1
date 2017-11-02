@@ -9,13 +9,36 @@
     <meta name="author" content="">
 
 
-    <title>Portfolio Item - Start Bootstrap Template</title>
+    <title>Project Search Engine</title>
 
     <!-- Bootstrap core CSS -->
     <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="/static/css/portfolio-item.css" rel="stylesheet">
+    <style type="text/css" media="print">
+
+
+
+     #t1 {
+       display:none;
+     }
+     #page-break	{ page-break-after:   always; }
+
+     #head{
+       -webkit-print-color-adjust: exact !important;
+
+       color:#339966;
+     }
+
+
+    </style>
+    <style>
+    #word{
+      word-break: inherit;
+
+    }
+    </style>
 
 
   </head>
@@ -23,16 +46,16 @@
   <body>
 
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-      <div class="container">
-        <a class="navbar-brand" href="#">Start Bootstrap</a>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" >
+      <div class="container" id="t1">
+        <a class="navbar-brand" href="#">Project Search Engine</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="#">Home
+              <a class="nav-link" href="/project">Home
                 <span class="sr-only">(current)</span>
               </a>
             </li>
@@ -49,14 +72,14 @@
     <div class="container">
 
       <!-- Portfolio Item Heading -->
-      <h1 class="my-4">Page Heading
-        <small>Secondary Text</small>
+      <h1 class="my-4" id="t1">Hidalgo County
+        <small id="t1">Drainage District No. 1</small>
       </h1>
       <div class="container">
   	<div class="row">
 <!-- Search box form -->
-  		<h2>Stylish Search Box</h2>
-      <div class="container">
+
+      <div class="container" id="t1">
 <div id="quick-access">
 <form class="form-inline quick-search-form" role="form" action="/project" method="post">
  <div class="form-group">
@@ -70,13 +93,13 @@
   </div>
   <% if(typeof data2 != 'undefined' && data2[0] && data2[0].Proj_id){ %>
     <table class="table table-bordered" width="100%" style="text-align:center"  >
-  <thead style="background-color:#339966">
-    <tr>
+  <thead style="background-color:#339966" >
+    <tr id="head">
       <th>Precint</th>
       <th>Project</th>
       <th>Engineer</th>
       <th>Updated as of:</th>
-    
+
       <th>Project List No.</th>
       <th>Project ID</th>
     </tr>
@@ -99,7 +122,7 @@
 
 
       <!-- Portfolio Item Row -->
-      <div class="row">
+      <div class="row" >
         <!-- check if there is anything is the data varaible -->
         <% if(data.length>0){ %>
         <div class="col-md-8">
@@ -108,14 +131,44 @@
         </div>
         <% } %>
 
-        <div class="col-md-4">
+        <div class="col-md-4" >
           <h3 class="my-3">Project Description</h3>
           <%
 <!-- This si quite a control statement first it checks that data exists then that the description is not null and then that the description is longer than 1 charcter then and only then will it print the description -->
-          if(typeof data[0] !='undefined'&& data[0].description!=null && data[0].description.length>1){ %>
-            <p> <%=data[0].description%><p>
+          if(typeof data[0] !='undefined'&& data[0].description!=null && data[0].description.length>1){
+            console.log("Description length: "+data[0].description.length);
+        // this control checks if the description is more than 700 characters longs
+            if(data[0].description.length > 700){
+        // if so , its going to divide the string by periods and asign it to an array
+              var parr = data[0].description.split('.');
+        // this varaible will contain a single paragraph
+              var singP="";
+      // this varaible counts the number of periods so far in the paragraph
+              var count= 0;
+    //  this loop iterates trough the parr array
+              for (var value of parr){
+  // this control statement checks if the sentence has the value No or Co which will indicate a . therefore decrease the count to avoid cutting parragrpah in the middle of a sentence .
+                  if(value.includes('No')||value.includes('Co')){
+                    count--;
+                  }
+                singP= singP+value+'.';
+                if(count==3 ){
+            %>
+            <div id="page-break">
+            <p > <%=singP%> </p>
+          </div>
+
+            <%
+                          count=0;
+                          singP="";
+                          }
+                          count++;
+                          }
+            }else {
+             %>
+            <p > <%=data[0].description%></p>
   <!--This would be the default state -->
-              <% }else{ %>
+              <% } }else{ %>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae. Sed dui lorem, adipiscing in adipiscing et, interdum nec metus. Mauris ultricies, justo eu convallis placerat, felis enim.</p>
           <% } %>
           <h3 class="my-3">Project Details</h3>
@@ -136,9 +189,11 @@
       <!-- /.row -->
 
       <!-- Related Projects Row -->
-      <h3 class="my-4">Related Projects</h3>
+      <% if (data.length >1){ %>
+      <h3 class="my-4" id="t1">Related Projects</h3>
+      <% } %>
 
-      <div class="row">
+      <div class="row" id="t1">
 <!-- first we check if there is anything int he data varaible -->
         <% if(data.length>0){
           <!-- if the query resulted in 5 or less items go ahead and print them all -->
@@ -180,7 +235,7 @@
     <!-- Footer -->
     <footer class="py-5 bg-dark">
       <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2017</p>
+        <p class="m-0 text-center text-white">Copyright &copy; Hidalgo County Drainage District No. 1</p>
       </div>
       <!-- /.container -->
     </footer>
