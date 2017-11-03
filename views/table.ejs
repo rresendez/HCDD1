@@ -4,10 +4,10 @@
   <!-- All of this is style for this particular file -->
 <style type="text/css">
 .blue_bg{ background-color:#5ccbf0;  color:#0b5a75; }
-.bluer_bg{ background-color:#14a2d2; }
+.bluer_bg{ background-color:#0f7ea3; }
 .head{ background-color: #0d6c8c; webkit-print-color-adjust: exact; color:white; font-weight: bold;}
 .foot{ background-color: #0d6c8c; color:white; font-weight: bold;webkit-print-color-adjust: exact;}
-.footd{ background-color: #0f7ea3; color:white;  webkit-print-color-adjust: exact;}
+.footd{ background-color: #1190bb; color:white;  webkit-print-color-adjust: exact;}
 .new{position: fixed; bottom: 2;}
 .label{display:block;}
 body{
@@ -19,6 +19,7 @@ table, th, td {
 }
 </style>
   <link rel="stylesheet" href="styles.css">
+  <link href="/static/css/portfolio-item.css" rel="stylesheet">
   <!-- Days of the week definition -->
   <% const daysInWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday','Sunday'];
     var count =0;
@@ -30,6 +31,7 @@ table, th, td {
 <!-- crate a variable to keep track of the total time -->
         var timeT=0;
         var timeOW=0;
+        var timeA = [0,0,0,0,0];
 
 <!-- Loops to results of the query -->
      query.forEach(function(data){
@@ -45,6 +47,8 @@ table, th, td {
        console.log("Number of week: "+data.week);
        <!-- Make the sum of the total time so far in minutes -->
        timeT = data.Total+timeT;
+
+       timeA[data.week]= Number(timeA[data.week])+Number(data.Total);
 
        console.log("This is week from data: "+ data.week);
 
@@ -63,6 +67,7 @@ table, th, td {
         timeT=minutes2H(timeT);
         timeOW=minutes2H(timeOW);
         console.log("This is time total but in hours fool!:"+ timeT );
+        console.log("This is time A index 0: "+ timeA);
 
     %>
 
@@ -96,6 +101,7 @@ table, th, td {
         <tr  >
           <td class="blue_bg" colspan="4" ><b><%- daysInWeek[i] -%></b></td>
         </tr>
+
         <% } %>
           <%
           <!-- Since I crate the loop before the rest of the code the loop must go up to 7 to complete each cicle -->
@@ -104,8 +110,10 @@ table, th, td {
             i=-1;
           <!-- Only prints new day if the number of week is equal or lees than 4 -->
             count++; if(count<5){ %>
+
             <tr>
               <td  align="center" class="bluer_bg" colspan="4" ><b>WEEK </b><b><%- count+1 -%></b></td>
+
             </tr>
           <%}}
           //Loop trough query
@@ -139,7 +147,16 @@ table, th, td {
                    <td><%- data.Total -%></td>
                  </tr>
 
-            <% } })  }
+            <% } %>
+
+
+            <% }) %>
+            <%  if(i==6){ %>
+                <tr class="footd">
+                <td  align="right" style="color:white; " colspan="3"><b> TOTAL HOURS FOR WEEK <%= count+1 %>  </b> </td> <td> <%= minutes2H(timeA[count]);   %> </td>
+              </tr>
+                <%}%>
+          <% }
 
         } %>
         <tfoot>
@@ -250,6 +267,7 @@ table, th, td {
    <!--Diplay the first last and id from select user -->
 
          <% } %>
+        
 </body>
 <!-- This is hte funciton that caluculates what day adn what week a date is -->
 <% function weekAndDay(date) {

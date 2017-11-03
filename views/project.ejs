@@ -38,6 +38,21 @@
       word-break: inherit;
 
     }
+    #img-fluid:hover{
+      position:relative;
+      top:-60px;
+  
+
+     z-index: 999;
+     border: solid;
+     border-color: #339966;
+     -webkit-transform:scale(1.8); /* Safari and Chrome */
+       -moz-transform:scale(1.8); /* Firefox */
+       -ms-transform:scale(1.8); /* IE 9 */
+       -o-transform:scale(1.8); /* Opera */
+        transform:scale(1.8);
+    }
+    #img-fluid{ transition: all .5s ease-in-out; }
     </style>
 
 
@@ -198,10 +213,14 @@
         <% if(data.length>0){
           <!-- if the query resulted in 5 or less items go ahead and print them all -->
         if(data.length <= 5){
-        for (var i=1; i< data.length; i++){ %>
+        for (var i=1; i< data.length; i++){
+            var name = data[i].image.slice(0,data[i].image.length-4);
+          %>
         <div class="col-md-3 col-sm-6 mb-4">
+            <b align='center'> <%= name.toUpperCase(); %></b>
+
           <a href="/static/public/images/upload_images/<%=data[i].image%>">
-            <img class="img-fluid" src="/static/public/images/upload_images/<%=data[i].image%>" alt="">
+            <img class="img-fluid" id="img-fluid" src="/static/public/images/upload_images/<%=data[i].image%>" alt="">
 
           </a>
           <form action="/project" method="post">
@@ -213,10 +232,12 @@
 
         <!-- if the query is longer than 5 just print the fisrt 5 -->
         <% }} else{
-        for (var i=1; i< 5; i++){ %>
+        for (var i=1; i< 5; i++){
+          var name = data[i].image.slice(0,data[i].image.length-4);%>
           <div class="col-md-3 col-sm-6 mb-4">
+            <b align='center' > <%= name.toUpperCase(); %></b>
             <a href="/static/public/images/upload_images/<%=data[i].image%>">
-              <img class="img-fluid" src="/static/public/images/upload_images/<%=data[i].image%>" alt="">
+              <img class="img-fluid" id="img-fluid" src="/static/public/images/upload_images/<%=data[i].image%>" alt="">
 
             </a>
             <form action="/project" method="post">
