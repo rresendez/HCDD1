@@ -442,7 +442,7 @@ app.post('/upload', function(req,res){
 };
 // Funciton get name
 function getNames(con,callback){
-	con.query("SELECT * from hcdd1user ",function (err,res){
+	con.query("SELECT * from hcdd1user WHERE UList='Y' ",function (err,res){
 		if(err) callback(err,null);
 		else{
 			callback(null,res);
@@ -466,7 +466,7 @@ function getProject(con,id,dateB,dateE,callback){
 //functio to get infomration about projects
 
 function getPInfo(con,callback){
-	con.query("SELECT * from hcdd1prj ORDER BY ProjOfficial",function (err,res){
+	con.query("SELECT * from hcdd1prj WHERE PList='Y' ORDER BY ProjOfficial",function (err,res){
 		if(err) callback(err,null);
 		else{
 			callback(null,res);
