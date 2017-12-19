@@ -35,6 +35,12 @@ table, th, td {
 
 <!-- Loops to results of the query -->
      query.forEach(function(data){
+       projI.forEach(function (pdata){
+         console.log("Project data"+ pdata.ProjOfficial);
+         if(data.Proj_ID==pdata.Proj_id){
+           data.ProjOfficial=pdata.ProjOfficial;
+         }
+       })
        console.log("ID "+data.id);
        <!-- This create the object property day from the query -1 so it will match the iterations of the table starting at 0 for monday -->
        data.day= data.TimeDate.getDay()-1;
@@ -142,7 +148,7 @@ table, th, td {
                   %>
                  <tr>
                    <td><%- day -%></td>
-                   <td><%- data.Proj_ID -%></td>
+                   <td><%- data.ProjOfficial -%></td>
                    <td><%- data.PDesc -%></td>
                    <td><%- data.Total -%></td>
                  </tr>
@@ -202,7 +208,7 @@ table, th, td {
                 %>
                 <tr>
                   <td><%- day -%></td>
-                  <td><%- data.Proj_ID -%></td>
+                  <td><%- data.ProjOfficial -%></td>
                   <td><%- data.PDesc -%></td>
                   <td><%- data.Total -%></td>
                 </tr>
