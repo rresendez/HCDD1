@@ -255,7 +255,7 @@ table, th, td {
 
         <% });%>
         <input type="text" name="description" placeholder="Project description" class="form-control" >
-        <input style="width:10" type="number" placeholder="Time In Hours" value="Time In Hours" name="time" class="form-control" id="timeI" title="Time in hours"  min="1" max="23"  />
+        <input style="width:10"  placeholder="Time In Hours" value="Time In Hours" name="time" class="form-control" id="timeI" title="Time in hours"  min="0" max="23"  />
 
 
           <button style="float:right; margin-right:1.5em" type="submit" class="btn btn-info">Create </button>
@@ -267,7 +267,7 @@ table, th, td {
    <!--Diplay the first last and id from select user -->
 
          <% } %>
-        
+
 </body>
 <!-- This is hte funciton that caluculates what day adn what week a date is -->
 <% function weekAndDay(date) {

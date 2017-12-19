@@ -240,8 +240,21 @@ app.post('/upload', function(req,res){
 		console.log("Crated artificial time: "+time.toTimeString());
 		var timeO=new Date("October 13, 2017 00:00:00");
 
+		console.log("Enter decimal time" + req.body.time);
+		if(req.body.time.includes('.')){
+			console.log("found period!");
+			var min = 60*req.body.time;
+			console.log("decimal time in minutes "+ min);
+
+			timeO = timeO.setMinutes(min);
+			timeO = new Date(timeO);
+			console.log("Added minutes "+ timeO);
+
+		}else{
+
 		 timeO = timeO.addHours(req.body.time);
 		console.log("Crated artificial added time: "+timeO.toTimeString());
+	}
 
 		//This is going to split the name last name and id into an array
 
