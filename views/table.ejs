@@ -257,7 +257,7 @@ table, th, td {
          <select name="project" placeholder="Project number" class="form-control" >
             <option value="" selected disabled hidden>Select Project</option>
          <% projI.forEach(function(data){ %>
-           <option> <%- data.Proj_id -%> <%- data.ProjNo -%> <%- data.ProjOfficial -%> <%- data.Owner -%><%- data.Pct -%> </option>
+           <option> <%- data.Proj_id -%> - <%- data.ProjOfficial -%> - <%- data.ProjNo -%>-<%- data.Pct -%> </option>
 
         <% });%>
         <input type="text" name="description" placeholder="Project description" class="form-control" >

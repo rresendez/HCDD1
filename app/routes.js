@@ -263,7 +263,7 @@ app.post('/upload', function(req,res){
 		console.log("We got the Id "+ id[2]);
 		//This function inserts a new entry to the database
 
-		var project = req.body.project.split(" ");
+		var project = req.body.project.split("-");
 		console.log("Project input: "+ project[0]);
 		insertNew(con,id[2],req.body.date,project[0],req.body.description,time,timeO,function(err,result){
 			if(err) {
